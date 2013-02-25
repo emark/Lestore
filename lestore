@@ -1,25 +1,104 @@
 #!/usr/bin/env perl
-use Mojolicious::Lite;
 
-# Documentation browser under "/perldoc"
-plugin 'PODRenderer';
+use strict;
+use lib "/home/hosting_locumtest/usr/local/lib/perl5";
+use Mojolicious::Lite;
+use Mojo::UserAgent;
+use DBIx::Custom;
+use Validator::Custom;
+use utf8;
+use v5.10.0;
+
+open (DBCONF,"< app.conf") || die "Error open dbconfig file";
+my @appconf=<DBCONF>;
+close DBCONF;
+chomp @appconf;
+our $dbi = DBIx::Custom->connect(
+            dsn => $appconf[0],
+            user => $appconf[1],
+            password => $appconf[2],
+            option => {mysql_enable_utf8=>1}
+);
+
+$dbi->do('SET NAMES utf8');
 
 get '/' => sub {
-  my $self = shift;
-  $self->render('index');
+	my $self = shift;
+	my $page = {
+		url => 'index',
+	};
+	$self->stash(page  => $page);
+	$self->render('index');	
+};
+
+post '/orders/new/' => sub{
+	my $self = shift;	
+	my $cartid = time;
+	my $customer = {
+		'person' => $self->param('person'),
+		'tel' => $self->param('tel'),
+		'email' => $self->param('email'),
+		'delivery' => $self->param('delivery'),
+		'payment' => $self->param('payment'),
+		'address' => $self->param('address'),
+		'comments' => $self->param('comments'),
+		'cartid' => $cartid,
+		'status' => 0,
+	};
+	
+	$dbi->insert(
+		$customer,
+		table => 'orders',
+	);
+
+	my $productid = {
+		$self->param('productid') = $self->param('count');
+	};
+
+	my $result = $dbi->select(
+		table => 'products',
+		where => {id => $productid}
+	); 
+
+	$self->stash(pid => $productid);
+	$self->render('orders');
+	#$self->redirect_to('/orders/');
+};
+
+get '/orders/new/' => sub{
+	my $self = shift;
+	my $page = {
+		'url' => 'orders',
+	};
+	my $result = $dbi->select(
+		table => 'products',
+	);
+
+	$self->stash(
+		page => $page,
+		products => $result->fetch_hash_all,
+	);
+	$self->render('neworder');
+};
+
+get '/orders/:orderstatus/' => {orderstatus => 0} => sub{
+	my $self = shift;
+	my $status = $self->param('orderstatus');
+	my $page = {
+		url => 'orders',
+	};
+
+	my $result = $dbi->select(
+		table => 'orders',
+		where => {status => $status},
+	);
+
+	$self->stash(
+		page => $page,
+		orders => $result->fetch_hash_all,
+		orderstatus => $status,
+	);
+	$self->render('orders');
 };
 
 app->start;
-__DATA__
-
-@@ index.html.ep
-% layout 'default';
-% title 'Welcome';
-Welcome to the Mojolicious real-time web framework!
-
-@@ layouts/default.html.ep
-<!DOCTYPE html>
-<html>
-  <head><title><%= title %></title></head>
-  <body><%= content %></body>
-</html>
