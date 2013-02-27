@@ -1,0 +1,4 @@
+% layout 'default';
+% title 'Estore Lite v 1.0';
+
+<%== $msg %>

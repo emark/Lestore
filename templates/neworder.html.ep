@@ -1,0 +1,103 @@
+% layout 'default';
+% title 'Новый заказ';
+
+<h1>Новый заказ</h1>
+
+<form action="" method="post">
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Арт.</th>
+      <th>Фото</th>
+      <th>Наименование</th>
+      <th>Стоимость</th>
+      <th>Остаток</th>
+      <th>Количество</th>
+    </tr>
+  </thead>
+  <tbody>
+% foreach my $product (@{$products}){
+	<tr>
+	<td><input type="hidden" name=productid value="<%=$product->{id} %>"><%=$product->{id} %></td>
+	<td><img src="/media/products/thumb/<%=$product->{url} %>.jpg" width=64 height64></td>
+	<td><input type="hidden" name=title value="<%=$product->{title} %>"><%=$product->{title} %></td>
+	<td><input type="hidden" name=price value="<%=$product->{price} %>"><%=$product->{price} %></td>
+	<td><%=$product->{instore} %></td>
+	<td><input class="input-mini" type="text" name="count"></td>
+	</tr>
+% }
+
+  </tbody>
+</table>
+
+<fieldset>
+	<div class="control-group">
+		<label class="control-label " for="person">Имя</label>
+		<div class="controls">	
+			<input class="span2" name="person" type="text" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="tel"><strong>Телефон*</strong></label>
+		<div class="controls">
+			<input class="span2" name="tel" type="text" />
+			<span class="help-block">Как вводить номер: +73912920229</span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label " for="email">Почта</label>
+		<div class="controls">
+			<input name="email" type="text" />
+		</div>	
+	</div>
+	<div class="control-group">
+		<label class="control-label"><strong>Варианты доставки*</strong></label>
+		<div class="controls">
+			<label class="radio">
+				<input name="delivery" type="radio" value="store" />
+				Самостоятельно из <a href="/about/contacts.html" target=_blank>пунктов самовывоза</a>
+            		</label>
+			<label class="radio">
+				<input name="delivery" type="radio" value="courier" />
+				Курьерская доставка (Красноярск) <a href="/about/delivery-and-payment.html" target=_blank>Условия доставки</a>.
+			</label>
+			<label class="radio">
+				<input name="delivery" type="radio" value="shipping" />
+				Транспортная компания (Россия)
+			</label>
+	        </div>
+		<label class="control-label ">Адрес доставки</label>
+		<div class="controls">
+			<textarea name="address" rows="2"></textarea>
+		</div>
+	</div>
+	<div class="control-group">
+	        <label class="control-label"><strong>Способ оплаты*</strong></label>
+        	<div class="controls">
+        		<label class="radio">
+				<input name="payment" type="radio" value="cash" />
+				Платёж наличными
+			</label>
+			<label class="radio">
+				<input name="payment" type="radio" value="yamoney" />
+				ПС &laquo;Яндекс.Деньги&raquo;
+			</label>
+			<label class="radio">
+				<input name="payment" type="radio" value="check" />
+				Банковский перевод
+			</label>
+	        </div>
+	</div>
+	<div class="control-group">
+        	<label class="control-label ">Комментарий к заказу</label>
+		<div class="controls">
+			<textarea name="comments" rows="3"></textarea>
+		</div>
+	</div>
+	<div class="controls">
+		<input type=submit class="btn" value="Подтвердить заказ">
+	</div>
+	</fieldset>
+
+</form>

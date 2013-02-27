@@ -1,0 +1,146 @@
+% layout 'default';
+% title 'Редактор заказа';
+
+<h1>Просмотр заказа</h1>
+<p>Заказ номер: <%= $cartid %></p>
+<form action="/orders/<%= $order->{cartid} %>/" method="post">
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Арт.</th>
+      <th>Наименование</th>
+      <th>Стоимость</th>
+      <th>Количество</th>
+    </tr>
+  </thead>
+  <tbody>
+% my $totalorder = 0;
+% foreach my $item (@{$items}){
+	<tr>
+	<td><input type="hidden" name=productid value="<%=$item->{productid} %>"><%=$item->{productid} %></td>
+	<td><%=$item->{title} %></td>
+	<td><%=$item->{price} %></td>
+	<td><input class="input-mini" type="text" name="count" value="<%=$item->{count} %>"></td>
+	</tr>
+% 	$totalorder = $totalorder+($item->{count}*$item->{price});
+% }
+  </tbody>
+</table>
+
+<h3>Сумма заказа: <%= $totalorder %> руб.</h3>
+
+<div class="row">
+	<div class="span4">
+
+<fieldset>
+	<div class="control-group">
+		<label class="control-label " for="person">Имя</label>
+		<div class="controls">	
+			<input class="span2" name="person" type="text" value="<%=$order->{person} %>" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="tel"><strong>Телефон*</strong></label>
+		<div class="controls">
+			<input class="span2" name="tel" type="text" value="<%=$order->{tel} %>" />
+			<span class="help-block">Как вводить номер: +73912920229</span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label " for="email">Почта</label>
+		<div class="controls">
+			<input name="email" type="text" value="<%=$order->{email} %>" />
+		</div>	
+	</div>
+</div>
+	<div class="span4">
+
+	<div class="control-group">
+		<label class="control-label"><strong>Варианты доставки*</strong></label>
+% my %delivery = ();
+% $delivery{$order->{delivery}} = 'selected';
+		<div class="controls">
+			<select name="delivery">
+				<option value="store" <%= $delivery{store} %>>Самовывоз</option>
+				<option value="courier" <%= $delivery{courier} %>>Курьерская доставка</option>
+				<option value="shipping" <%= $delivery{shipping} %>>Транспортная компания</option>
+			</select>
+	        </div>
+		<label class="control-label ">Адрес доставки</label>
+		<div class="controls">
+			<textarea name="address" rows="2"><%=$order->{address} %></textarea>
+		</div>
+	</div>
+	<div class="control-group">
+	        <label class="control-label"><strong>Способ оплаты*</strong></label>
+% my %payment = ();
+% $payment{$order->{payment}} = 'selected';
+        	<div class="controls">
+			<select name="payment">
+				<option value="cash" <%= $payment{cash} %>>Платёж наличными</option>
+				<option value="yamoney" <%= $payment{yamoney} %>>Яндекс.Деньги</option>
+				<option value="check" <%= $payment{check} %>>Банковский перевод</option>
+			</select>
+	        </div>
+	</div>
+
+</div>
+	<div class="span4">
+
+	<div class="control-group">
+        	<label class="control-label ">Комментарий к заказу</label>
+		<div class="controls">
+			<textarea name="comments" rows="3"><%=$order->{comments} %></textarea>
+		</div>
+	</div>
+
+	
+% if($order->{writeoff} == 0){
+	<div class="control-group">
+	        <label class="control-label"><strong>Статус заказа</strong></label>
+% 	my %orderstatus = (0 => 'Входящие',1 => 'Активные',2 => 'Отменён',3 => 'Архив');
+		<select name="orderstatus">
+% 	foreach my $key (keys %orderstatus){
+% 	my $selected = '';
+% 	$selected = 'selected' if $key == $order->{status};
+		  <option <%= $selected %> value="<%= $key %>"><%= $orderstatus{$key} %></option>
+% 	}
+		</select>
+	</div>
+
+	<div class="controls">
+		<input type=submit class="btn btn-primary" value="Обновить заказ">
+	</div>
+% };
+
+	</fieldset>
+</div>
+</div>
+</form>
+
+% if ($order->{status} == 3){
+
+<div class="alert alert-error">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>Внимание!</strong> Опции ниже только для администратора.
+</div>
+
+<form action="/orders/<%= $cartid %>/writeoff/" method="post">
+% foreach my $item (@{$items}){
+<input type="hidden" name="productid" value="<%=$item->{productid} %>">
+<input type="hidden" name="count" value="<%=$item->{count} %>">
+% }
+
+<label>Списание товаров</label>
+% my @selected = ('','');
+% $selected[$order->{writeoff}] = 'selected';
+<select name="writeoff">
+	<option value="0" <%= $selected[0] %>>Не проведено</option>
+	<option value="1" <%= $selected[1] %>>Проведено</option>
+</select>
+<div class="controls">
+%= submit_button 'Выполнить'
+</div>
+</form>
+% };

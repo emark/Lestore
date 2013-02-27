@@ -1,0 +1,53 @@
+% layout 'default';
+% title 'Наши заказы';
+
+<h1>Наши заказы</h1>
+
+% my @class = ();
+% $class[$orderstatus] = 'active';
+<div class="pagination">
+  <ul>
+    <li class="<%= $class[0] %>"><a href="/orders/status/">Входящие</a></li>
+    <li class="<%= $class[1] %>"><a href="/orders/status/1">Активные</a></li>
+    <li class="<%= $class[3] %>"><a href="/orders/status/3">Архив</a></li>
+    <li class="<%= $class[2] %>"><a href="/orders/status/2">Отменен</a></li>
+  </ul>
+</div>
+
+<p><a href="/orders/new" class="btn">Новый заказ</a></p>
+
+% if(@{$orders}){
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Клиент</th>
+      <th>Тел./Почта</th>
+      <th>Оплата</th>
+      <th>Доставка</th>
+      <th>Адрес</th>
+      <th>Комментарий</th>
+    </tr>
+  </thead>
+  <tbody>
+
+%	my %delivery = (courier => 'Курьером', store => 'Самовывоз', shipping => 'Транспортные');
+%	my %payment = (cash => 'Наличные', check => 'Банк', yamoney => 'Яндекс');
+% 	my @status_class = ('','info','error','success');
+% 	foreach my $order(@{$orders}){
+    <tr class="<%= $status_class[$order->{status}] %>">
+      <td><%= $order->{id}%> [<%= $order->{writeoff} %>]<br /><a href="/orders/<%= $order->{cartid}%>/"><%= $order->{cartid}%></a></td>
+      <td><%= $order->{person}%></td>
+      <td><%= $order->{tel}%> <br /> <a href="mailto:<%= $order->{email}%>"><%= $order->{email}%></a></td>
+      <td><%= $payment{$order->{payment}} %></td>
+      <td><%= $delivery{$order->{delivery}} %></td>
+      <td><%= $order->{address}%></td>
+      <td><%= $order->{comments}%></td>
+    </tr>
+% 	}
+  </tbody>
+</table>
+
+% }else{
+<p>Заказы отсутствуют</p>
+% };
