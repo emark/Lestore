@@ -80,6 +80,7 @@
 			<select name="payment">
 				<option value="cash" <%= $payment{cash} %>>Платёж наличными</option>
 				<option value="yamoney" <%= $payment{yamoney} %>>Яндекс.Деньги</option>
+				<option value="credit" <%= $payment{credit} %>>Оплата в кредит</option>
 				<option value="check" <%= $payment{check} %>>Банковский перевод</option>
 			</select>
 	        </div>

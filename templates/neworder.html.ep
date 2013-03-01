@@ -84,6 +84,10 @@
 				ПС &laquo;Яндекс.Деньги&raquo;
 			</label>
 			<label class="radio">
+				<input name="payment" type="radio" value="credit" />
+				Оплата в кредит
+			</label>
+			<label class="radio">
 				<input name="payment" type="radio" value="check" />
 				Банковский перевод
 			</label>

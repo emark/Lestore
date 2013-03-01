@@ -32,7 +32,7 @@
   <tbody>
 
 %	my %delivery = (courier => 'Курьером', store => 'Самовывоз', shipping => 'Транспортные');
-%	my %payment = (cash => 'Наличные', check => 'Банк', yamoney => 'Яндекс');
+%	my %payment = (cash => 'Наличные', check => 'Банк', yamoney => 'Яндекс', credit => 'Оплата в кредит');
 % 	my @status_class = ('','info','error','success');
 % 	foreach my $order(@{$orders}){
     <tr class="<%= $status_class[$order->{status}] %>">
