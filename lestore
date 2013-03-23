@@ -371,7 +371,7 @@ post '/store/' => sub{
 
     while (my $row = $result->fetch_hash){
         for(my $i=0; $i<@productid; $i++){
-            if($count[$i] && $count[$i]>0){
+            if($count[$i]){
                     $update{$row->{id}} = $row->{instore}+$count[$i] if ($productid[$i] == $row->{id});
             };
         };
