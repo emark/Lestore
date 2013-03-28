@@ -1,5 +1,6 @@
 % layout 'default';
 % title 'Товары на складе';
+% my $caturl = $self->param('caturl') || '';
 
 <h1>Товары на складе</h1>
 
@@ -9,7 +10,16 @@
   </ul>
 </div>
 
-<form action="" method="post">
+<h4>Категории</h4>
+<ul class="nav nav-pills">
+% foreach my $cat (@{$category}){
+% 	my $class_disabled = '';
+% 	$class_disabled = 'disabled' if ($caturl eq $cat->{'url'});
+  <li class="<%= $class_disabled %>"><a href="/store/category/<%= $cat->{url} %>"><%= $cat->{caption} %></a></li>
+% }
+</ul>
+
+<form action="/store/" method="post">
 
 <table class="table table-hover">
   <thead>

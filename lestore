@@ -184,7 +184,10 @@ post '/orders/:cartid/writeoff/' => sub{
 	
 	foreach my $productid (keys %update){
 		$dbi->update(
-			{instore => $update{$productid}},
+			{
+				instore => $update{$productid},
+				lastmod => \"NOW()",
+			},
 			table => 'products',
 			where => {id => $productid},
 		);
@@ -324,10 +327,43 @@ get '/store/' => sub{
 		table => 'products'
 	);
 	
-	$self->stash(
-		page => $page,
-		products => $result->fetch_hash_all,
+	my $category = $dbi->select(
+        table => 'pages',
+        column => ['url','caption'],
+        where => {type => 0},
+    );
+
+    $self->stash(
+        page => $page,
+        products => $result->fetch_hash_all,
+        category => $category->fetch_hash_all,
+    );
+};
+
+get '/store/category/:caturl' => sub{
+	my $self = shift;
+	my $caturl = $self->param('caturl');
+    my $page = {
+        url => 'store',
+    };
+    my $result = $dbi->select(
+        table => 'products',
+		where => {caturl => $caturl}
+    );
+
+	my $category = $dbi->select(
+		table => 'pages',
+		column => ['url','caption'],
+		where => {type => 0},
 	);
+
+    $self->stash(
+        page => $page,
+        products => $result->fetch_hash_all,
+		category => $category->fetch_hash_all,
+    );
+	
+	$self->render('store');
 };
 
 get '/store/reserved/' => sub{
@@ -353,6 +389,8 @@ get '/store/reserved/' => sub{
 		page => $page,
 		items => $result->fetch_hash_all,
 	);
+	
+	$self->render('storereserved');
 };
 
 
