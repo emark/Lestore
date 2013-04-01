@@ -328,7 +328,7 @@ get '/store/' => sub{
 	);
 	
 	my $category = $dbi->select(
-        table => 'pages',
+        table => 'catalog',
         column => ['url','caption'],
         where => {type => 0},
     );
@@ -352,7 +352,7 @@ get '/store/category/:caturl' => sub{
     );
 
 	my $category = $dbi->select(
-		table => 'pages',
+		table => 'catalog',
 		column => ['url','caption'],
 		where => {type => 0},
 	);
