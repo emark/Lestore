@@ -9,7 +9,8 @@
   <ul>
     <li class="<%= $class[0] %>"><a href="/orders/status/">Входящие</a></li>
     <li class="<%= $class[1] %>"><a href="/orders/status/1">Активные</a></li>
-    <li class="<%= $class[3] %>"><a href="/orders/status/3">Архив</a></li>
+    <li class="<%= $class[3] %>"><a href="/orders/status/3">Закрытые</a></li>
+    <li class="<%= $class[4] %>"><a href="/orders/status/4">Архив</a></li>
     <li class="<%= $class[2] %>"><a href="/orders/status/2">Отменен</a></li>
   </ul>
 </div>
