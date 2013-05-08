@@ -61,7 +61,7 @@
 
 <script type="text/javascript">
 function CheckOrder() {
-	$.get('/cgi-bin/storeadmin/checkorders.pl', function(data) {
+	$.get('/cgi-bin/storeadmin/notify.pl', function(data) {
 		$('.result').html(data);
 		if (data != 0){
 			alert('Получен новый заказ #'+data);
