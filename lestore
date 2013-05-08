@@ -46,6 +46,7 @@ post '/orders/new/' => sub{
 		'payment' => $self->param('payment'),
 		'address' => $self->param('address'),
 		'comments' => $self->param('comments'),
+		'storename' => $self->param('storename'),
 		'cartid' => $cartid,
 		'status' => 0,
 	};
@@ -278,6 +279,7 @@ post '/orders/:cartid/' => sub{
         'delivery' => $self->param('delivery'),
         'payment' => $self->param('payment'),
         'address' => $self->param('address'),
+		'storename' => $self->param('storename'),
         'comments' => $self->param('comments'),
         'status' => $self->param('orderstatus'),
     };

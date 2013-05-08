@@ -93,8 +93,15 @@
 			</label>
 	        </div>
 	</div>
+	<div class="controls">
+	        <label class="control-label"><strong>Интернет-магазин</strong></label>
+		<select name="storename">
+			<option value="nastartshop">НаСтарт</option>
+			<option value="papatut">Папатут</option>
+		</select>
+        </div>
 	<div class="control-group">
-        	<label class="control-label ">Комментарий к заказу</label>
+        	<label class="control-label">Комментарий к заказу</label>
 		<div class="controls">
 			<textarea name="comments" rows="3"></textarea>
 		</div>

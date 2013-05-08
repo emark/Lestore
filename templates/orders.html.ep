@@ -15,6 +15,10 @@
   </ul>
 </div>
 
+<div id="checkorders">
+<p>Status: <span></span></p>
+</div>
+
 <p><a href="/orders/new" class="btn">Новый заказ</a></p>
 
 % if(@{$orders}){
@@ -22,6 +26,7 @@
   <thead>
     <tr>
       <th>#</th>
+      <th>Магазин</th>
       <th>Клиент</th>
       <th>Тел./Почта</th>
       <th>Оплата</th>
@@ -38,6 +43,7 @@
 % 	foreach my $order(@{$orders}){
     <tr class="<%= $status_class[$order->{status}] %>">
       <td><%= $order->{id}%>-<a href="/orders/<%= $order->{cartid}%>/"><%= $order->{cartid}%></a>-<%= $order->{writeoff} %></td>
+      <td><%= $order->{storename}%></td>
       <td><%= $order->{person}%></td>
       <td><%= $order->{tel}%> <br /> <a href="mailto:<%= $order->{email}%>"><%= $order->{email}%></a></td>
       <td><%= $payment{$order->{payment}} %></td>
@@ -52,3 +58,18 @@
 % }else{
 <p>Заказы отсутствуют</p>
 % };
+
+<script type="text/javascript">
+function CheckOrder() {
+	$.get('/cgi-bin/storeadmin/checkorders.pl', function(data) {
+		$('.result').html(data);
+		if (data != 0){
+			alert('Получен новый заказ #'+data);
+		};
+		$('#checkorders span').text('uptime');
+	});
+	setTimeout(CheckOrder, 90000);
+};
+
+CheckOrder();
+</script>

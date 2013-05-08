@@ -22,6 +22,7 @@
     <![endif]-->
 
     <link rel="shortcut icon" href="/assets/Lestore/ico/favicon.png">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   </head>
 
   <body>
@@ -59,6 +60,6 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/assets/Lestore/js/jquery.js"></script>
+
   </body>
 </html>

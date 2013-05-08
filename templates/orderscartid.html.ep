@@ -62,8 +62,10 @@
 
 	<div class="control-group">
 		<label class="control-label"><strong>Варианты доставки*</strong></label>
+
 % my %delivery = ();
 % $delivery{$order->{delivery}} = 'selected';
+
 		<div class="controls">
 			<select name="delivery">
 				<option value="store" <%= $delivery{store} %>>Самовывоз</option>
@@ -78,8 +80,10 @@
 	</div>
 	<div class="control-group">
 	        <label class="control-label"><strong>Способ оплаты*</strong></label>
+
 % my %payment = ();
 % $payment{$order->{payment}} = 'selected';
+
         	<div class="controls">
 			<select name="payment">
 				<option value="cash" <%= $payment{cash} %>>Платёж наличными</option>
@@ -93,6 +97,16 @@
 </div>
 	<div class="span4">
 
+% my %storename = ();
+% $storename{$order->{storename}} = 'selected';
+
+	<div class="controls">
+	        <label class="control-label"><strong>Интернет-магазин</strong></label>
+		<select name="storename">
+			<option value="nastartshop" <%= $storename{nastartshop} %>>НаСтарт</option>
+			<option value="papatut" <%= $storename{papatut} %>>Папатут</option>
+		</select>
+        </div>
 	<div class="control-group">
         	<label class="control-label ">Комментарий к заказу</label>
 		<div class="controls">
