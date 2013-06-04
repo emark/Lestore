@@ -19,7 +19,7 @@ our $dbi = DBIx::Custom->connect(
             password => $appconf[2],
             option => {mysql_enable_utf8=>1}
 );
-my $discounts = {split /\W/, $appconf[4]};
+my $discounts = {split /\W/, $appconf[3]};
 
 $dbi->do('SET NAMES utf8');
 
