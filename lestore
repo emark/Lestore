@@ -260,7 +260,7 @@ get '/orders/:cartid/discount/:discount_id' => {discount_id => 0} => sub{
 
 	};
 
-	foreach my $key (keys $discounts){
+	foreach my $key (keys %{$discounts}){
 		if ($total_cart > $key && $discount->{discount} < $discounts->{$key}){
 			$discount->{name} = "$cartid-$discounts->{$key}";
 			$discount->{discount} = $discounts->{$key};
