@@ -12,6 +12,7 @@
       <th>Фото</th>
       <th>Наименование</th>
       <th>Стоимость</th>
+      <th>Скидка</th>
       <th>Остаток</th>
       <th>Количество</th>
     </tr>
@@ -21,8 +22,9 @@
 	<tr>
 	<td><input type="hidden" name=productid value="<%=$product->{id} %>"><%=$product->{id} %></td>
 	<td><img src="/media/products/store/<%=$product->{url} %>.jpg" width="64" height="64"></td>
-	<td><input type="hidden" name=title value="<%=$product->{title} %>"><%=$product->{title} %></td>
-	<td><input type="hidden" name=price value="<%=$product->{price} %>"><%=$product->{price} %></td>
+	<td><input type="hidden" name="title" value="<%=$product->{title} %>"><%=$product->{title} %></td>
+	<td><input type="hidden" name="price" value="<%=$product->{price} %>"><%=$product->{price} %></td>
+	<td><input type="hidden" name="productdiscount" value="<%=$product->{discount} %>"><%=$product->{discount} %></td>
 	<td><%=$product->{instore} %></td>
 	<td><input class="input-mini" type="text" name="count"></td>
 	</tr>
@@ -92,6 +94,12 @@
 				Банковский перевод
 			</label>
 	        </div>
+	</div>
+	<div class="control-group">
+		<label class="control-label " for="discount">Дисконт / Промо-код</label>
+		<div class="controls">	
+			<input class="span3" name="discount" type="text" />
+		</div>
 	</div>
 	<div class="controls">
 	        <label class="control-label"><strong>Интернет-магазин</strong></label>

@@ -12,18 +12,25 @@
       <th>Наименование</th>
       <th>Стоимость</th>
       <th>Количество</th>
+      <th>Скидка</th>
     </tr>
   </thead>
   <tbody>
 % my $totalorder = 0;
+% my $discount_base = 0;
+% my $total_cart = 0;
+% my $discount_sum = 0;
+% my $discount_cart = 0;
 % foreach my $item (@{$items}){
 	<tr>
 	<td><input type="hidden" name=productid value="<%=$item->{productid} %>"><%=$item->{productid} %></td>
 	<td><%=$item->{title} %></td>
 	<td><%=$item->{price} %></td>
 	<td><input class="input-mini" type="text" name="count" value="<%=$item->{count} %>"></td>
+	<td><%= $item->{discount} %></td>
 	</tr>
-% 	$totalorder = $totalorder+($item->{count}*$item->{price});
+%	$discount_base = $discount_base+$item->{count}*$item->{price} if ($item->{discount} == 0);
+%	$total_cart = $total_cart+($item->{count}*$item->{price});
 % }
   </tbody>
 </table>
@@ -32,7 +39,15 @@
 <a href="/orders/<%= $cartid %>/add" class="btn">Добавить товар</a>
 % };
 
-<h3>Сумма заказа: <%= $totalorder %> руб.</h3>
+% $discount_sum = sprintf ("%d",$discount_base*$discount->{discount}/100);
+% $discount_cart = $total_cart-$discount_sum;
+
+<h3>Сумма заказа: <%= $discount_cart %> руб.</h3>
+<p><b>Общая сумма заказа:</b> <%= $total_cart %> руб.<br />
+<b>Дисконт / Промо-код:</b> <%= $order->{discount} %><br /><b>Скидка: </b><%= $discount->{discount} %>% 
+% if(!$discount->{enable}){
+<a href="/orders/<%= $cartid %>/discount/<%= $discount->{id} %>" class="btn btn-small">Пересчитать</a></p>
+% }
 
 <div class="row">
 	<div class="span4">
@@ -54,7 +69,7 @@
 	<div class="control-group">
 		<label class="control-label " for="email">Почта</label>
 		<div class="controls">
-			<input name="email" type="text" value="<%=$order->{email} %>" />
+			<input name="email" class="span3" type="text" value="<%=$order->{email} %>" />
 		</div>	
 	</div>
 </div>
@@ -93,7 +108,6 @@
 			</select>
 	        </div>
 	</div>
-
 </div>
 	<div class="span4">
 

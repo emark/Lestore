@@ -19,6 +19,7 @@ our $dbi = DBIx::Custom->connect(
             password => $appconf[2],
             option => {mysql_enable_utf8=>1}
 );
+my $discounts = {split /\W/, $appconf[4]};
 
 $dbi->do('SET NAMES utf8');
 
@@ -47,6 +48,7 @@ post '/orders/new/' => sub{
 		'address' => $self->param('address'),
 		'comments' => $self->param('comments'),
 		'storename' => $self->param('storename'),
+		'discount' => $self->param('discount'),
 		'cartid' => $cartid,
 		'status' => 0,
 	};
@@ -60,11 +62,13 @@ post '/orders/new/' => sub{
 	my @pcnt = $self->param('count');
 	my @ptitle = $self->param('title');
 	my @pprice = $self->param('price');
+	my @pdiscount = $self->param('productdiscount');
 
 	my @productid = ();
 	my @count = ();
 	my @title = ();
 	my @price = ();
+	my @discount = ();
 	my $n = 0;	
 	my $i = 0;
 	for ($i=0; $i<@pid; $i++){
@@ -73,6 +77,7 @@ post '/orders/new/' => sub{
 			$count[$n] = $pcnt[$i];
 			$title[$n] = $ptitle[$i];
 			$price[$n] = $pprice[$i];
+			$discount[$n] = $pdiscount[$i];
 			$n++;
 		};
 	};
@@ -85,6 +90,7 @@ post '/orders/new/' => sub{
 				count => $count[$i],
 				price => $price[$i],
 				cartid => $cartid,
+				discount => $discount[$i],
 			},
 			table => 'items',
 		);
@@ -149,11 +155,20 @@ get '/orders/:cartid/' => sub{
 	);
 	
 	my $items = $result->fetch_hash_all;
-
+	
+	$result = $dbi->select(
+		table => 'discounts',
+		where => {name => $order->{discount}},
+	);
+	
+	my $discount = $result->fetch_hash_one;
+	$discount->{discount} = 0 if !$discount;
+	
 	$self->stash(
 		page => $page,
 		order => $order,
 		items => $items,
+		discount => $discount,
 	);	
 	$self->render('orderscartid');
 };
@@ -222,6 +237,72 @@ get '/orders/:cartid/add' => sub{
     );
 };
 
+get '/orders/:cartid/discount/:discount_id' => {discount_id => 0} => sub{
+    my $self = shift;
+    my $page = {
+        'url' => 'orders',
+    };
+
+	my $cartid = $self->param('cartid');
+	my $discount_id = $self->param('discount_id');
+
+    my $result = $dbi->select(
+        table => 'items',
+		where => {cartid => $cartid},
+    );
+	
+	my $total_cart = 0;
+	my $discount->{discount} = 0;
+	$discount->{name} = '';
+
+	while(my $row = $result->fetch_hash){
+		$total_cart = $total_cart+$row->{price}*$row->{count};
+
+	};
+
+	foreach my $key (keys $discounts){
+		if ($total_cart > $key && $discount->{discount} < $discounts->{$key}){
+			$discount->{name} = "$cartid-$discounts->{$key}";
+			$discount->{discount} = $discounts->{$key};
+		};
+	};
+
+	$dbi->update(
+		{discount => $discount->{name}},
+		table => 'orders',
+		where => {cartid => $cartid},
+	);
+
+	if($discount->{discount}>0){
+		if($discount_id){
+			$dbi->update(
+				$discount,
+				table => 'discounts',
+				where => {id => $discount_id},
+			);
+		}else{
+			$dbi->insert(
+				$discount,
+				table => 'discounts',
+			);
+		};
+	}else{
+		if($discount_id){
+			$dbi->delete(
+				table => 'discounts',
+				where =>  {id => $discount_id},
+			);
+		};
+	};
+
+	$self->stash(
+        page => {url => 'orders'},
+        msg => "Обновление дисконта по заявке <a href=\"/orders/$cartid\">$cartid</a> выполнено.",
+    );
+
+    $self->render('index');
+};
+
 post '/orders/:cartid/add' => sub{
 	my $self = shift;
 	my $cartid = $self->param('cartid');
@@ -229,11 +310,13 @@ post '/orders/:cartid/add' => sub{
     my @pcnt = $self->param('count');
     my @ptitle = $self->param('title');
     my @pprice = $self->param('price');
+	my @pdiscount = $self->param('productdiscount');
 
     my @productid = ();
     my @count = ();
     my @title = ();
     my @price = ();
+	my @discount = ();
     my $n = 0;
     my $i = 0;
     for ($i=0; $i<@pid; $i++){
@@ -242,6 +325,7 @@ post '/orders/:cartid/add' => sub{
             $count[$n] = $pcnt[$i];
             $title[$n] = $ptitle[$i];
             $price[$n] = $pprice[$i];
+			$discount[$n] = $pdiscount[$i];
             $n++;
         };
     };
@@ -254,6 +338,7 @@ post '/orders/:cartid/add' => sub{
                 count => $count[$i],
                 price => $price[$i],
                 cartid => $cartid,
+				discount => $discount[$i],
             },
             table => 'items',
         );

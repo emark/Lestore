@@ -42,7 +42,7 @@
 % 	my @status_class = ('','info','error','success');
 % 	foreach my $order(@{$orders}){
     <tr class="<%= $status_class[$order->{status}] %>">
-      <td><%= $order->{id}%>-<a href="/orders/<%= $order->{cartid}%>/"><%= $order->{cartid}%></a>-<%= $order->{writeoff} %></td>
+      <td><%= link_to $order->{id} => "/orders/$order->{cartid}" %>-<%= $order->{writeoff} %></td>
       <td><%= $order->{storename}%></td>
       <td><%= $order->{person}%></td>
       <td><%= $order->{tel}%> <br /> <a href="mailto:<%= $order->{email}%>"><%= $order->{email}%></a></td>
