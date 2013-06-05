@@ -45,7 +45,7 @@
 <h3>Сумма заказа: <%= $discount_cart %> руб.</h3>
 <p><b>Общая сумма заказа:</b> <%= $total_cart %> руб.<br />
 <b>Дисконт / Промо-код:</b> <%= $order->{discount} %><br /><b>Скидка: </b><%= $discount->{discount} %>% 
-% if(!$discount->{enable}){
+% if(!$discount->{enable} && $order->{status} == 1){
 <a href="/orders/<%= $cartid %>/discount/<%= $discount->{id} %>" class="btn btn-small">Пересчитать</a></p>
 % }
 
