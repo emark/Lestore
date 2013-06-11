@@ -22,12 +22,21 @@
 % my $discount_sum = 0;
 % my $discount_cart = 0;
 % foreach my $item (@{$items}){
+% 	my $discount_price = 0;
+% 	my $discount_item = 0;
 	<tr>
 	<td><input type="hidden" name=productid value="<%=$item->{productid} %>"><%=$item->{productid} %></td>
-	<td><%=$item->{title} %></td>
-	<td><%=$item->{price} %></td>
+	<td><%= $item->{title} %></td>
+%	$discount_price = $item->{price};
+%	if ($item->{discount} == 0 && $discount->{discount}){
+%		$discount_price = sprintf ("%d",($item->{price}*$discount->{discount}/100));
+%		$discount_price = $item->{price}-$discount_price;
+% 	};
+	<td><%= $discount_price %></td>
 	<td><input class="input-mini" type="text" name="count" value="<%=$item->{count} %>"></td>
-	<td><%= $item->{discount} %></td>
+%	$discount_item = $item->{discount};
+%	$discount_item = $discount->{discount} if ($item->{discount} == 0 && $discount->{discount});
+	<td><%= $discount_item %></td>
 	</tr>
 %	$discount_base = $discount_base+$item->{count}*$item->{price} if ($item->{discount} == 0);
 %	$total_cart = $total_cart+($item->{count}*$item->{price});
