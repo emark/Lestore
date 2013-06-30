@@ -71,7 +71,9 @@
 <b>Дисконт / Промо-код:</b> <%= $order->{discount} %>
 
 % if($discount->{closed}){
-	<span class="label label-important">Внимание</span> Дисконт закрыт {<%= link_to $discount->{closed} => "/orders/$discount->{closed}" %>}. 
+%	my $link = $cartid;
+%	$link = "<a href=\"/orders/$discount->{closed}/\">" if $cartid != $discount->{closed};
+	<span class="label label-important">Внимание</span> Дисконт закрыт {<%= $link %>}
 % }
 
 <br /><b>Скидка: </b><%= $discount->{discount} %> 
