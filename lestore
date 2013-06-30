@@ -282,7 +282,7 @@ get '/orders/:cartid/discount/:operation/:discountid' => {discountid => 0} => su
 
 			foreach my $key (keys %{$discounts}){
 				if ($total_cart > $key && $discount->{discount} < $discounts->{$key}){
-					$discount->{name} = "$cartid-$discounts->{$key}";
+					$discount->{name} = $cartid;
 					$discount->{discount} = $discounts->{$key};
 				};
 			};
