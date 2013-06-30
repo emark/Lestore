@@ -69,10 +69,12 @@
 <h3>Сумма заказа: <%= $discount_cart %> руб.</h3>
 <p><b>Общая сумма заказа:</b> <%= $total_cart %> руб.<br />
 <b>Дисконт / Промо-код:</b> <%= $order->{discount} %>
-<br /><b>Скидка: </b><%= $discount->{discount} %> 
+
 % if($discount->{closed}){
-	<span class="label label-important">Внимание</span> Дисконт закрыт {<%= $discount->{closed} %>}
+	<span class="label label-important">Внимание</span> Дисконт закрыт {<%= link_to $discount->{closed} => "/orders/$discount->{closed}" %>}. 
 % }
+
+<br /><b>Скидка: </b><%= $discount->{discount} %> 
 
 % if(!$discount->{enable} && !$discount->{closed}){
 %	if($order->{status} == 1){
@@ -192,8 +194,8 @@
 </div>
 </form>
 
-% if ($order->{status} == 3){
 
+% if ($order->{status} == 3){
 <div class="alert alert-error">
   <button type="button" class="close" data-dismiss="alert">&times;</button>
   <strong>Внимание!</strong> Опции ниже только для администратора.
@@ -223,8 +225,9 @@
 
 	</div>
 	<div class="span3">
-% if(!$discount->{enable} && $order->{status} == 3){
-
+% if($discount->{closed}){
+	<p>Удалить данные дисконта</p>
+	<a href="/orders/<%= $cartid %>/discount/clear/" class="btn btn-danger">Очистить дисконт</a>
 % };
 	</div>
 </div>

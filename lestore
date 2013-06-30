@@ -320,6 +320,12 @@ get '/orders/:cartid/discount/:operation/:discountid' => {discountid => 0} => su
 				table => 'discounts',
 				where => {id => $discountid}
 			);	
+		}elsif(/clear/){
+			$dbi->update(
+				{discount => ''},
+				table => 'orders',
+				where => {cartid => $cartid},
+			);
 		}else{
 			$msg = "Данное действие дисконта для заказа <a href=\"/orders/$cartid\">$cartid</a>  не определено.";
 		}
