@@ -205,29 +205,29 @@
 	<div class="span3">
 
 	<form action="/orders/<%= $cartid %>/writeoff/" method="post">
-% foreach my $item (@{$items}){
+% 	foreach my $item (@{$items}){
 		<input type="hidden" name="productid" value="<%=$item->{productid} %>">
 		<input type="hidden" name="count" value="<%=$item->{count} %>">
-% }
+% 	}
 
 		<label>Списание товаров</label>
-% my @selected = ('','');
-% $selected[$order->{writeoff}] = 'selected';
+%	my @selected = ('','');
+% 	$selected[$order->{writeoff}] = 'selected';
 		<select name="writeoff">
 			<option value="0" <%= $selected[0] %>>Не проведено</option>
 			<option value="1" <%= $selected[1] %>>Проведено</option>
 		</select>
 		<div class="controls">
-%= submit_button 'Выполнить'
+%= 	submit_button 'Выполнить'
 		</div>
 	</form>
-% };
 
 	</div>
 	<div class="span3">
-% if($discount->{closed}){
+% 	if($discount->{closed}){
 	<p>Удалить данные дисконта</p>
 	<a href="/orders/<%= $cartid %>/discount/clear/" class="btn btn-danger">Очистить дисконт</a>
-% };
+% 	};
 	</div>
 </div>
+% };
