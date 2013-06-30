@@ -72,7 +72,7 @@
 
 % if($discount->{closed}){
 %	my $link = $cartid;
-%	$link = "<a href=\"/orders/$discount->{closed}/\">" if $cartid != $discount->{closed};
+%	$link = "<a href=\"/orders/$discount->{closed}/\">$discount->{closed}</a>" if $cartid != $discount->{closed};
 	<span class="label label-important">Внимание</span> Дисконт закрыт {<%== $link %>}
 % }
 
