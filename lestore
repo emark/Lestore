@@ -19,7 +19,7 @@ our $dbi = DBIx::Custom->connect(
             password => $appconf[2],
             option => {mysql_enable_utf8=>1}
 );
-my $discounts = {split /\W/, $appconf[3]};
+my $discounts = {split /,/, $appconf[3]};
 
 $dbi->do('SET NAMES utf8');
 
@@ -36,9 +36,25 @@ get '/' => sub {
 	$self->render('index');	
 };
 
+get '/searchorder/' => sub{
+	my $self = shift;
+	my $orderid = $self->param('id');
+	my $cartid = $dbi->select(
+		table => 'orders',
+		column => 'cartid',
+		where => {id => $orderid},
+	)->value;
+	$self->redirect_to("/orders/$cartid");
+};
+
 post '/orders/new/' => sub{
 	my $self = shift;	
 	my $cartid = time;
+	
+	my @ltime = localtime(time);
+	my $rvcode = substr $cartid, -6;
+	$rvcode = $rvcode+$ltime[4]+$ltime[5];	
+
 	my $customer = {
 		'person' => $self->param('person'),
 		'tel' => $self->param('tel'),
@@ -51,6 +67,7 @@ post '/orders/new/' => sub{
 		'discount' => $self->param('discount'),
 		'cartid' => $cartid,
 		'status' => 0,
+		'rvcode' => $rvcode,
 	};
 	
 	$dbi->insert(
@@ -237,67 +254,79 @@ get '/orders/:cartid/add' => sub{
     );
 };
 
-get '/orders/:cartid/discount/:discount_id' => {discount_id => 0} => sub{
+get '/orders/:cartid/discount/:operation/:discountid' => {discountid => 0} => sub{
     my $self = shift;
     my $page = {
         'url' => 'orders',
     };
 
 	my $cartid = $self->param('cartid');
-	my $discount_id = $self->param('discount_id');
+	my $operation = $self->param('operation');	
+	my $discountid = $self->param('discountid');
+	my $msg = "Обновление {$operation} дисконта по заявке <a href=\"/orders/$cartid\">$cartid</a> выполнено.";
 
-    my $result = $dbi->select(
-        table => 'items',
-		where => {cartid => $cartid},
-    );
+	for($operation){
+		if(/update/){
+		    my $result = $dbi->select(
+	        table => 'items',
+			where => {cartid => $cartid},
+		    );
 	
-	my $total_cart = 0;
-	my $discount->{discount} = 0;
-	$discount->{name} = '';
+			my $total_cart = 0;
+			my $discount->{discount} = 0;
+			$discount->{name} = '';
 
-	while(my $row = $result->fetch_hash){
-		$total_cart = $total_cart+$row->{price}*$row->{count};
+			while(my $row = $result->fetch_hash){
+				$total_cart = $total_cart+$row->{price}*$row->{count};
+			};
 
-	};
+			foreach my $key (keys %{$discounts}){
+				if ($total_cart > $key && $discount->{discount} < $discounts->{$key}){
+					$discount->{name} = "$cartid-$discounts->{$key}";
+					$discount->{discount} = $discounts->{$key};
+				};
+			};
 
-	foreach my $key (keys %{$discounts}){
-		if ($total_cart > $key && $discount->{discount} < $discounts->{$key}){
-			$discount->{name} = "$cartid-$discounts->{$key}";
-			$discount->{discount} = $discounts->{$key};
-		};
-	};
-
-	$dbi->update(
-		{discount => $discount->{name}},
-		table => 'orders',
-		where => {cartid => $cartid},
-	);
-
-	if($discount->{discount}>0){
-		if($discount_id){
 			$dbi->update(
-				$discount,
-				table => 'discounts',
-				where => {id => $discount_id},
+				{discount => $discount->{name}},
+				table => 'orders',
+				where => {cartid => $cartid},
 			);
-		}else{
-			$dbi->insert(
-				$discount,
-				table => 'discounts',
-			);
-		};
-	}else{
-		if($discount_id){
-			$dbi->delete(
-				table => 'discounts',
-				where =>  {id => $discount_id},
-			);
-		};
-	};
 
+			if($discount->{discount}>0){
+				if($discountid){
+					$dbi->update(
+						$discount,
+						table => 'discounts',
+						where => {id => $discountid},
+					);
+				}else{
+					$dbi->insert(
+						$discount,
+						table => 'discounts',
+					);
+				};
+			}else{
+				if($discountid){
+					$dbi->delete(
+						table => 'discounts',
+						where =>  {id => $discountid},
+					);
+				};
+			};
+		}elsif(/close/){
+			$dbi->update(
+				{closed => $cartid},
+				table => 'discounts',
+				where => {id => $discountid}
+			);	
+		}else{
+			$msg = "Данное действие дисконта для заказа <a href=\"/orders/$cartid\">$cartid</a>  не определено.";
+		}
+	};
 	$self->stash(
         page => {url => 'orders'},
-        msg => "Обновление дисконта по заявке <a href=\"/orders/$cartid\">$cartid</a> выполнено.",
+		msg => $msg,
     );
 
     $self->render('index');

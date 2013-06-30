@@ -68,10 +68,20 @@
 
 <h3>Сумма заказа: <%= $discount_cart %> руб.</h3>
 <p><b>Общая сумма заказа:</b> <%= $total_cart %> руб.<br />
-<b>Дисконт / Промо-код:</b> <%= $order->{discount} %><br /><b>Скидка: </b><%= $discount->{discount} %> 
-% if(!$discount->{enable} && $order->{status} == 1){
-<a href="/orders/<%= $cartid %>/discount/<%= $discount->{id} %>" class="btn btn-small">Пересчитать</a></p>
+<b>Дисконт / Промо-код:</b> <%= $order->{discount} %>
+<br /><b>Скидка: </b><%= $discount->{discount} %> 
+% if($discount->{closed}){
+	<span class="label label-important">Внимание</span> Дисконт закрыт {<%= $discount->{closed} %>}
 % }
+
+% if(!$discount->{enable} && !$discount->{closed}){
+%	if($order->{status} == 1){
+<a href="/orders/<%= $cartid %>/discount/update/<%= $discount->{id} %>" class="btn btn-small" title="Будут сброшены текущие данные по дисконту">Пересчитать по стандарту</a>
+% 	}elsif($order->{status} == 3){
+<a href="/orders/<%= $cartid %>/discount/close/<%= $discount->{id} %>" class="btn btn-small btn-warning">Закрыть дисконт</a>
+%	};
+% };
+</p>
 
 <div class="row">
 	<div class="span4">
@@ -115,6 +125,7 @@
 		<label class="control-label ">Адрес доставки</label>
 		<div class="controls">
 			<textarea name="address" rows="2"><%=$order->{address} %></textarea>
+			<span class="help-block">Показать адрес на <a href="http://maps.yandex.ru/?text=<%=$order->{address} %>" target=_blank>Яндекс.Картах</a></span>
 		</div>
 	</div>
 	<div class="control-group">
@@ -151,6 +162,11 @@
 			<textarea name="comments" rows="3"><%=$order->{comments} %></textarea>
 		</div>
 	</div>
+	<div class="control-group">
+		<div class="controls">
+			Код отзыва: <b><%= $order->{rvcode} %></b>
+		</div>
+	</div>
 
 	
 % if($order->{writeoff} == 0){
@@ -183,21 +199,32 @@
   <strong>Внимание!</strong> Опции ниже только для администратора.
 </div>
 
-<form action="/orders/<%= $cartid %>/writeoff/" method="post">
+<div class="row">
+	<div class="span3">
+
+	<form action="/orders/<%= $cartid %>/writeoff/" method="post">
 % foreach my $item (@{$items}){
-<input type="hidden" name="productid" value="<%=$item->{productid} %>">
-<input type="hidden" name="count" value="<%=$item->{count} %>">
+		<input type="hidden" name="productid" value="<%=$item->{productid} %>">
+		<input type="hidden" name="count" value="<%=$item->{count} %>">
 % }
 
-<label>Списание товаров</label>
+		<label>Списание товаров</label>
 % my @selected = ('','');
 % $selected[$order->{writeoff}] = 'selected';
-<select name="writeoff">
-	<option value="0" <%= $selected[0] %>>Не проведено</option>
-	<option value="1" <%= $selected[1] %>>Проведено</option>
-</select>
-<div class="controls">
+		<select name="writeoff">
+			<option value="0" <%= $selected[0] %>>Не проведено</option>
+			<option value="1" <%= $selected[1] %>>Проведено</option>
+		</select>
+		<div class="controls">
 %= submit_button 'Выполнить'
-</div>
-</form>
+		</div>
+	</form>
 % };
+
+	</div>
+	<div class="span3">
+% if(!$discount->{enable} && $order->{status} == 3){
+
+% };
+	</div>
+</div>

@@ -48,7 +48,7 @@
       <td><%= $order->{tel}%> <br /> <a href="mailto:<%= $order->{email}%>"><%= $order->{email}%></a></td>
       <td><%= $payment{$order->{payment}} %></td>
       <td><%= $delivery{$order->{delivery}} %></td>
-      <td><%= $order->{address}%></td>
+      <td><a href="http://maps.yandex.ru/?text=<%= $order->{address}%>" title="Показать на Яндекс.Карты" target=_blank><%= $order->{address}%></a></td>
       <td><%= $order->{comments}%></td>
     </tr>
 % 	}
