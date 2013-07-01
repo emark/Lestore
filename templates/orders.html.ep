@@ -45,7 +45,7 @@
       <td><a href="/orders/<%= $order->{cartid} %>"><%= $order->{id} %></a>-<%= $order->{writeoff} %></td>
       <td><%= $order->{storename}%></td>
       <td><%= $order->{person}%></td>
-      <td><%= $order->{tel}%> <br /> <a href="mailto:<%= $order->{email}%>"><%= $order->{email}%></a></td>
+      <td><a href="sip:<%= $order->{tel} %>"><%= $order->{tel} %></a><br /> <a href="mailto:<%= $order->{email}%>"><%= $order->{email}%></a></td>
       <td><%= $payment{$order->{payment}} %></td>
       <td><%= $delivery{$order->{delivery}} %></td>
       <td><a href="http://maps.yandex.ru/?text=<%= $order->{address}%>" title="Показать на Яндекс.Карты" target=_blank><%= $order->{address}%></a></td>

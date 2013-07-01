@@ -105,7 +105,7 @@
 		<label class="control-label" for="tel"><strong>Телефон*</strong></label>
 		<div class="controls">
 			<input class="span2" name="tel" type="text" value="<%=$order->{tel} %>" />
-			<span class="help-block">Как вводить номер: +73912920229</span>
+			<span class="help-block">Позвонить на номер <a href="sip:<%= $order->{tel} %>"><%= $order->{tel} %></a></span>
 		</div>
 	</div>
 	<div class="control-group">
