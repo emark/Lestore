@@ -1,6 +1,10 @@
 % layout 'default';
 % title 'Редактор заказа';
 
+% my $rvcode = 0;
+% $rvcode = int(rand(999));
+%= $rvcode;
+
 <h1>Заказ <%= $order->{id} %></h1>
 
 % my @orderstatus = ('Новый','Активный','Отменен','Закрыт','Архивный');

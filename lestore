@@ -50,11 +50,7 @@ get '/searchorder/' => sub{
 post '/orders/new/' => sub{
 	my $self = shift;	
 	my $cartid = time;
-	
-	my @ltime = localtime(time);
-	my $rvcode = substr $cartid, -6;
-	$rvcode = $rvcode+$ltime[4]+$ltime[5];	
-
+	my $rvcode = int(rand(999));	
 	my $customer = {
 		'person' => $self->param('person'),
 		'tel' => $self->param('tel'),
