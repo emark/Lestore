@@ -43,7 +43,7 @@
 
             <ul class="nav">
               <li <%== $top_menu_class{index} %>><a href="/">Главная</a></li>
-              <li <%== $top_menu_class{orders} %>><a href="/orders/status">Заявки</a></li>
+              <li <%== $top_menu_class{orders} %>><a href="/orders/status">Заказы</a></li>
               <li <%== $top_menu_class{store} %>><a href="/store/">Склад</a></li>
             </ul>
 <form class="navbar-search pull-left" action="/searchorder/">
