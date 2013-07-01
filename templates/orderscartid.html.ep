@@ -1,8 +1,7 @@
 % layout 'default';
 % title 'Редактор заказа';
 
-<h1>Просмотр заказа</h1>
-<p>Заказ номер: <%= $order->{id} %>-<span title="<%= localtime($cartid) %>"><%= $cartid %></span></p>
+<h1><%= $order->{id} %>-<span title="<%= localtime($cartid) %>"><%= $cartid %></span></h1>
 <form action="/orders/<%= $order->{cartid} %>/" method="post">
 
 <table class="table table-hover">
