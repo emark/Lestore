@@ -26,7 +26,6 @@
   <thead>
     <tr>
       <th>#</th>
-      <th>Магазин</th>
       <th>Клиент</th>
       <th>Тел./Почта</th>
       <th>Оплата</th>
@@ -41,9 +40,11 @@
 %	my %payment = (cash => 'Наличные', check => 'Банк', yamoney => 'Яндекс', credit => 'Оплата в кредит');
 % 	my @status_class = ('','info','error','success');
 % 	foreach my $order(@{$orders}){
+% 	my @chatcount;
+% 	@chatcount = split('#',$order->{chat}) if $order->{chat};
+
     <tr class="<%= $status_class[$order->{status}] %>">
-      <td><a href="/orders/<%= $order->{cartid} %>"><%= $order->{id} %></a>-<%= $order->{writeoff} %></td>
-      <td><%= $order->{storename}%></td>
+      <td><a href="/orders/<%= $order->{cartid} %>"><%= $order->{id} %></a>-<%= @chatcount %></td>
       <td><%= $order->{person}%></td>
       <td><a href="sip:<%= $order->{tel} %>"><%= $order->{tel} %></a><br /> <a href="mailto:<%= $order->{email}%>"><%= $order->{email}%></a></td>
       <td><%= $payment{$order->{payment}} %></td>

@@ -334,6 +334,33 @@ get '/orders/:cartid/discount/:operation/:discountid' => {discountid => 0} => su
     $self->render('index');
 };
 
+post '/orders/:cartid/chat/:operation' => sub{
+	my $self = shift;
+	my $cartid = $self->param('cartid');
+	my $operation = $self->param('operation');
+	my @chats = $self->param('chat');
+	my $msg = $self->param('msg');
+	my $chat = join('',@chats);
+
+	for($operation){
+		if(/add/){
+			$chat = $chat.$msg.'^'.time().'#' if ($msg);
+			$dbi->update(
+				{chat => $chat},
+				table => 'orders',
+				where => {cartid => $cartid}
+			);
+		}elsif(/delete/){
+		};
+	};
+
+	$self->stash(
+		page => {url => 'orders'},
+		msg => "Обновление {$operation} комментариев к заказу <a href=\"/orders/$cartid/\">$cartid</a> выполнено."
+	);
+	$self->render('index');
+};
+
 post '/orders/:cartid/add' => sub{
 	my $self = shift;
 	my $cartid = $self->param('cartid');

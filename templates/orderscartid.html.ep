@@ -192,7 +192,7 @@
 	</div>
 
 	<div class="controls">
-		<input type=submit class="btn btn-primary" value="Обновить заказ">
+		<input type=submit class="btn btn-primary btn-large" value="Обновить заказ">
 	</div>
 % };
 
@@ -201,6 +201,47 @@
 </div>
 </form>
 
+<div class="row">
+	<div class="span5">
+
+% my %chat = ();
+% if ($order->{chat}){
+%	my @chats = split('#',$order->{chat});
+% 	foreach my $key (@chats){
+%		my ($msg,$time) = split('\^',$key);
+%		$chat{$time} = $msg;
+%	};
+% };
+% my $chatcount = keys %chat;
+		<ul class="nav nav-tabs">
+		  <li class="active"><a href="#addchat" data-toggle="tab">Новый</a></li>
+		  <li><a href="#allchats" data-toggle="tab">Все комментарии (<%= $chatcount %>)</a></li>
+		</ul>
+		<div id="chat" class="tab-content">
+			<div id="addchat" class="tab-pane active">
+%	if($order->{status} == 1){
+			<p>Добавить комментарий</p>
+			<form action="/orders/<%= $cartid %>/chat/add" method="post">
+			<input type="hidden" name="chat" value="<%= $order->{chat} %>">
+			<textarea rows=2 class="span5" name="msg"></textarea>
+			<input type="submit" value="Записать" class="btn">
+			</form>
+%	}
+			</div>
+			<div id="allchats" class="tab-pane">
+% if(%chat){
+% my @msgtime = sort {$b <=> $a} keys %chat;
+%	foreach my $key (@msgtime){
+		<p><small class="muted"><%= localtime($key) %></small><br /><%= $chat{$key} %></p>
+% 	}
+% }else{
+				<p>Комментариев нет</p>
+% }
+			</div>
+
+		</div>
+	</div>
+</div>
 
 % if ($order->{status} == 3){
 <div class="alert alert-error">
