@@ -112,6 +112,7 @@
 		<label class="control-label " for="email">Почта</label>
 		<div class="controls">
 			<input name="email" class="span3" type="text" value="<%=$order->{email} %>" />
+			<span class="help-block"><a href="mailto:<%= $order->{email} %>">Отправить сообщение</a></span>
 		</div>	
 	</div>
 </div>

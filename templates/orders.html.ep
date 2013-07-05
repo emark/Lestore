@@ -61,12 +61,13 @@
 
 <script type="text/javascript">
 function CheckOrder() {
+	var t=new Date();
 	$.get('/cgi-bin/storeadmin/notify.pl', function(data) {
 		$('.result').html(data);
 		if (data != 0){
 			alert('Получен новый заказ #'+data);
 		};
-		$('#checkorders span').text('uptime');
+		$('#checkorders span').text('uptime. Last update: '+t.getHours()+':'+t.getMinutes()+':'+t.getSeconds());
 	});
 	setTimeout(CheckOrder, 90000);
 };
