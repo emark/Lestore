@@ -163,6 +163,7 @@
 			<option value="papatut" <%= $storename{papatut} %>>Папатут</option>
 		</select>
         </div-->
+	<input type="hidden" name="storename" value="nastartshop">
 	<div class="control-group">
         	<label class="control-label ">Комментарий к заказу</label>
 		<div class="controls">

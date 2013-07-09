@@ -101,13 +101,14 @@
 			<input class="span3" name="discount" type="text" />
 		</div>
 	</div>
-	<div class="controls">
+	<!--div class="controls">
 	        <label class="control-label"><strong>Интернет-магазин</strong></label>
 		<select name="storename">
 			<option value="nastartshop">НаСтарт</option>
 			<option value="papatut">Папатут</option>
 		</select>
-        </div>
+        </div-->
+	<input type="hidden" name="storename" value="nastartshop">
 	<div class="control-group">
         	<label class="control-label">Комментарий к заказу</label>
 		<div class="controls">
