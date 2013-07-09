@@ -6,7 +6,7 @@
 % my @orderstatus = ('Новый','Активный','Отменен','Закрыт','Архивный');
 
 <p>Номер корзины: <span title="<%= localtime($cartid) %>"><%= $cartid %></span><br />
-Статус заказа: <%= $orderstatus[$order->{status}] %></p>
+Статус заказа: <a href="/orders/status/<%= $order->{status} %>"><%= $orderstatus[$order->{status}] %></a></p>
 <form action="/orders/<%= $order->{cartid} %>/" method="post">
 
 <table class="table table-hover">
@@ -105,14 +105,12 @@
 		<label class="control-label" for="tel"><strong>Телефон*</strong></label>
 		<div class="controls">
 			<input class="span2" name="tel" type="text" value="<%=$order->{tel} %>" />
-			<span class="help-block">Позвонить на номер <a href="sip:<%= $order->{tel} %>"><%= $order->{tel} %></a></span>
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label " for="email">Почта</label>
 		<div class="controls">
 			<input name="email" class="span3" type="text" value="<%=$order->{email} %>" />
-			<span class="help-block"><a href="mailto:<%= $order->{email} %>">Отправить сообщение</a></span>
 		</div>	
 	</div>
 </div>
@@ -158,13 +156,13 @@
 % my %storename = ();
 % $storename{$order->{storename}} = 'selected';
 
-	<div class="controls">
+	<!--div class="controls">
 	        <label class="control-label"><strong>Интернет-магазин</strong></label>
 		<select name="storename">
 			<option value="nastartshop" <%= $storename{nastartshop} %>>НаСтарт</option>
 			<option value="papatut" <%= $storename{papatut} %>>Папатут</option>
 		</select>
-        </div>
+        </div-->
 	<div class="control-group">
         	<label class="control-label ">Комментарий к заказу</label>
 		<div class="controls">
@@ -204,38 +202,38 @@
 <div class="row">
 	<div class="span5">
 
-% my %chat = ();
-% if ($order->{chat}){
-%	my @chats = split('#',$order->{chat});
-% 	foreach my $key (@chats){
-%		my ($msg,$time) = split('\^',$key);
-%		$chat{$time} = $msg;
+% my %task = ();
+% if ($order->{task}){
+%	my @tasks = split('#',$order->{task});
+% 	foreach my $key (@tasks){
+%		my ($text,$time) = split('\^',$key);
+%		$task{$time} = $text;
 %	};
 % };
-% my $chatcount = keys %chat;
+% my $taskscount = keys %task;
 		<ul class="nav nav-tabs">
-		  <li class="active"><a href="#addchat" data-toggle="tab">Новый</a></li>
-		  <li><a href="#allchats" data-toggle="tab">Все комментарии (<%= $chatcount %>)</a></li>
+		  <li class="active"><a href="#addchat" data-toggle="tab">Новая</a></li>
+		  <li><a href="#allchats" data-toggle="tab">Все задачи (<%= $taskscount %>)</a></li>
 		</ul>
 		<div id="chat" class="tab-content">
 			<div id="addchat" class="tab-pane active">
 %	if($order->{status} == 1){
-			<p>Добавить комментарий</p>
+			<p>Добавить задачу</p>
 			<form action="/orders/<%= $cartid %>/chat/add" method="post">
-			<input type="hidden" name="chat" value="<%= $order->{chat} %>">
+			<input type="hidden" name="chat" value="<%= $order->{task} %>">
 			<textarea rows=2 class="span5" name="msg"></textarea>
 			<input type="submit" value="Записать" class="btn">
 			</form>
 %	}
 			</div>
 			<div id="allchats" class="tab-pane">
-% if(%chat){
-% my @msgtime = sort {$b <=> $a} keys %chat;
-%	foreach my $key (@msgtime){
-		<p><small class="muted"><%= localtime($key) %></small><br /><%= $chat{$key} %></p>
+% if(%task){
+% my @texttime = sort {$b <=> $a} keys %task;
+%	foreach my $key (@texttime){
+		<p><small class="muted"><%= localtime($key) %></small><br /><%= $task{$key} %></p>
 % 	}
 % }else{
-				<p>Комментариев нет</p>
+				<p>Задач нет</p>
 % }
 			</div>
 

@@ -1,0 +1,44 @@
+% layout 'default';
+% title 'Наши заказы';
+
+<h1>Задачи</h1>
+
+% if(@{$tasks}){
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Заказ</th>
+      <th>Задача</th>
+    </tr>
+  </thead>
+  <tbody>
+
+% 	foreach my $task(@{$tasks}){
+% 		if($task->{task}){
+	<tr>
+		<td><a href="/orders/<%= $task->{cartid} %>"><%= $task->{id} %></a></td>
+		<td>
+% 			my %task = ();
+%			my @tasks = split('#',$task->{task});
+%		 	foreach my $key (@tasks){
+%				my ($text,$time) = split('\^',$key);
+%				$task{$time} = $text;
+%			};
+% 			my @texttime = sort {$b <=> $a} keys %task;
+%			foreach my $key (@texttime){
+		<p><small class="muted"><%= localtime($key) %></small><br /><%= $task{$key} %></p>
+%		 	}
+		</td>
+	</tr>
+
+%		}
+% 	}
+
+  </tbody>
+</table>
+
+% }else{
+
+<p>Задачи отсутствуют</p>
+
+% };

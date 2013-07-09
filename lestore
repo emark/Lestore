@@ -524,6 +524,7 @@ get '/store/reserved/' => sub{
 			'items.price',
 			'items.cartid',
 			'items.productid',
+			'orders.id as orderid',
 		],
 		where => {'orders.status' => 1},
 		join => ['left join orders on orders.cartid=items.cartid'],
@@ -576,6 +577,23 @@ post '/store/' => sub{
 		msg => 'Обновлены остатки по выбранным товарам',
 	);
     $self->render('index');
+};
+
+get '/tasks/' => sub{
+	my $self = shift;
+	my $page = {
+		url => 'tasks',
+	};
+	my $result = $dbi->select(
+		table => 'orders',
+		columns => 'tasks',
+		where => {status => '1'},
+	);
+	
+	$self->stash(
+		page => $page,
+		tasks => $result->fetch_hash_all,
+	);
 };
 
 app->start;
