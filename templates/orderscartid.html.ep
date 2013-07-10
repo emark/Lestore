@@ -213,21 +213,21 @@
 % };
 % my $taskscount = keys %task;
 		<ul class="nav nav-tabs">
-		  <li class="active"><a href="#addchat" data-toggle="tab">Новая</a></li>
-		  <li><a href="#allchats" data-toggle="tab">Все задачи (<%= $taskscount %>)</a></li>
+		  <li class="active"><a href="#addtask" data-toggle="tab">Новая</a></li>
+		  <li><a href="#alltasks" data-toggle="tab">Все задачи (<%= $taskscount %>)</a></li>
 		</ul>
-		<div id="chat" class="tab-content">
-			<div id="addchat" class="tab-pane active">
+		<div id="task" class="tab-content">
+			<div id="addtask" class="tab-pane active">
 %	if($order->{status} == 1){
 			<p>Добавить задачу</p>
-			<form action="/orders/<%= $cartid %>/chat/add" method="post">
-			<input type="hidden" name="chat" value="<%= $order->{task} %>">
+			<form action="/orders/<%= $cartid %>/task/add" method="post">
+			<input type="hidden" name="task" value="<%= $order->{task} %>">
 			<textarea rows=2 class="span5" name="msg"></textarea>
 			<input type="submit" value="Записать" class="btn">
 			</form>
 %	}
 			</div>
-			<div id="allchats" class="tab-pane">
+			<div id="alltasks" class="tab-pane">
 % if(%task){
 % my @texttime = sort {$b <=> $a} keys %task;
 %	foreach my $key (@texttime){
