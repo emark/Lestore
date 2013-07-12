@@ -116,7 +116,7 @@
 		</div>
 	</div>
 	<div class="controls">
-		<input type=submit class="btn" value="Подтвердить заказ">
+		<input type=submit class="btn btn-large" value="Сохранить заказ">
 	</div>
 	</fieldset>
 

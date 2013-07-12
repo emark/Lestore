@@ -3,15 +3,16 @@
 
 <h1>Заказ <%= $order->{id} %></h1>
 
-% my @orderstatus = ('Новый','Активный','Отменен','Закрыт','Архивный');
+% my @orderstatus = ('Входящий','Активный','Отменен','Закрыт','Архивный');
 
 <p>Номер корзины: <span title="<%= localtime($cartid) %>"><%= $cartid %></span><br />
 Статус заказа: <a href="/orders/status/<%= $order->{status} %>"><%= $orderstatus[$order->{status}] %></a></p>
 <form action="/orders/<%= $order->{cartid} %>/" method="post">
 
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
   <thead>
     <tr>
+      <th>#</th>
       <th>Арт.</th>
       <th>Наименование</th>
       <th>Стоимость</th>
@@ -43,8 +44,10 @@
 % my $balance = $discount_cart;
 % my $discount_price = 0;
 % my $discount_item = 0;
+% my $n = 1;
 % foreach my $item (@{$items}){
 	<tr>
+	<td><%= $n++ %></td>
 	<td><input type="hidden" name=productid value="<%=$item->{productid} %>"><%=$item->{productid} %></td>
 	<td><%= $item->{title} %></td>
 %	$discount_price = $item->{price};
@@ -66,8 +69,8 @@
   </tbody>
 </table>
 
-% if(!$order->{writeoff}){
-<a href="/orders/<%= $cartid %>/add" class="btn">Добавить товар</a>
+% if(!$order->{writeoff} && $order->{status} == 1){
+<a href="/orders/<%= $cartid %>/add" class="btn"><i class="icon icon-th"></i> Добавить товар</a>
 % };
 
 <h3>Сумма заказа: <%= $discount_cart %> руб.</h3>
@@ -84,7 +87,22 @@
 
 % if(!$discount->{enable} && !$discount->{closed}){
 %	if($order->{status} == 1){
-<a href="/orders/<%= $cartid %>/discount/update/<%= $discount->{id} %>" class="btn btn-small" title="Будут сброшены текущие данные по дисконту">Пересчитать по стандарту</a>
+<a href="#myModal" role="button" class="btn" data-toggle="modal" title="Будут сброшены текущие данные по дисконту"><i class="icon icon-refresh"></i> Пересчитать</a>
+
+	<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Обновление значений дисконта</h3>
+	  </div>	
+	  <div class="modal-body">
+	    <p>Текущие значения дисконта будут заменены значениями по-умлочанию, без возможности восстановления.</p>
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Отмена</button>
+	    <a href="/orders/<%= $cartid %>/discount/update/<%= $discount->{id} %>" class="btn btn-primary" title="Будут сброшены текущие данные по дисконту">Продолжить</a>
+	  </div>
+	</div>
+
 % 	}elsif($order->{status} == 3){
 <a href="/orders/<%= $cartid %>/discount/close/<%= $discount->{id} %>" class="btn btn-small btn-warning">Закрыть дисконт</a>
 %	};
@@ -201,7 +219,7 @@
 </form>
 
 <div class="row">
-	<div class="span5">
+	<div class="span12">
 
 % my %task = ();
 % if ($order->{task}){
@@ -214,7 +232,8 @@
 % my $taskscount = keys %task;
 		<ul class="nav nav-tabs">
 		  <li class="active"><a href="#addtask" data-toggle="tab">Новая</a></li>
-		  <li><a href="#alltasks" data-toggle="tab">Все задачи (<%= $taskscount %>)</a></li>
+		  <li><a href="#alltasks" data-toggle="tab"><i class="icon-th-list icons"></i> Все задачи (<%= $taskscount %>)</a></li>
+		  <li><a href="#prnForms" data-toggle="tab"><i class="icon-print icons"></i> Печатные формы</a></li>
 		</ul>
 		<div id="task" class="tab-content">
 			<div id="addtask" class="tab-pane active">
@@ -237,11 +256,14 @@
 				<p>Задач нет</p>
 % }
 			</div>
-
+			<div id="prnForms" class="tab-pane">
+				<a href="/cgi-bin/storeadmin/prnforms.pl?t=TradeCheck&cartid=<%= $cartid %>" target=PrintForm class="btn"> Товарный чек</a>
+				<a href="/cgi-bin/storeadmin/prnforms.pl?t=OrderView&cartid=<%= $cartid %>" target=PrintForm class="btn">Накладная</a>
+			</div>
 		</div>
 	</div>
 </div>
-
+<br />
 % if ($order->{status} == 3){
 <div class="alert alert-error">
   <button type="button" class="close" data-dismiss="alert">&times;</button>

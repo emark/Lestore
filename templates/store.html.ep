@@ -49,5 +49,5 @@
   </tbody>
 </table>
 
-%= submit_button 'Обновить остатки'
+%= submit_button 'Обновить остатки', class => 'btn btn-large'
 </form>

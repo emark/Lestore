@@ -3,6 +3,7 @@
 
 <h1>Добавление товаров в заказ</h1>
 
+<p><a href="/orders/<%= $cartid %>" class="btn">Отменить</a></p>
 <form action="" method="post">
 
 <table class="table table-hover">
