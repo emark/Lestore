@@ -37,8 +37,8 @@
 % foreach my $product (@{$products}){
 	<tr>
 	<td><input type="hidden" name=productid value="<%=$product->{id} %>"><%=$product->{id} %></td>
-	<td><img src="/media/products/store/<%=$product->{url} %>.jpg" width=64 height64></td>
-	<td><input type="hidden" name=title value="<%=$product->{title} %>"><%=$product->{title} %></td>
+	<td><img src="/media/products/64x/<%=$product->{url} %>.jpg"></td>
+	<td><input type="hidden" name=title value="<%=$product->{title} %>"><a href="/store/<%= $product->{id} %>" target=_blank><%=$product->{title} %></a></td>
 	<td><input type="hidden" name=price value="<%=$product->{price} %>"><%=$product->{price} %></td>
 	<td><%=$product->{discount} %></td>
 	<td><%=$product->{instore} %></td>

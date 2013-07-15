@@ -5,7 +5,8 @@ use lib "/home/hosting_locumtest/usr/local/lib/perl5";
 use Mojolicious::Lite;
 use Mojo::UserAgent;
 use DBIx::Custom;
-use Validator::Custom;
+use Date::Parse;
+
 use utf8;
 use v5.10.0;
 
@@ -28,7 +29,36 @@ get '/' => sub {
 	my $page = {
 		url => 'index',
 	};
-	my $msg = 'Страница в разработке';
+	my @ltime = localtime(time);
+	my $month = $ltime[4]+1;
+	my $year = 1900+$ltime[5];
+	$month = '0'.$month if $month < 10;
+	my $unixtime = str2time("$month/01/$year 00:00:00");
+
+	my $result = $dbi->select(
+		table => 'orders',
+		where => [
+			':cartid{>=} and :status{=}',
+			{cartid => $unixtime, status => 4},
+		],
+	);
+	my $orders = $result;
+	my $ordercount = 0;
+	my $totalsum = 0;
+	while (my $row = $orders->fetch_hash){
+		$result = $dbi->select(
+			table => 'items',
+			where => {cartid => $row->{cartid}},
+		);
+		while (my $item = $result->fetch_hash){
+			my $price = $item->{price};
+			$price = $item->{price}-$item->{price}*($item->{discount}/100) if $item->{discount};
+			$totalsum = $totalsum + $item->{count}*$price;
+		}
+		$ordercount++;
+	};
+
+	my $msg = "С начала месяца обработано: $ordercount заказов. Общая сумма без учета скидок $totalsum рублей";
 	$self->stash(
 		page => $page,
 		msg => $msg,
@@ -593,6 +623,23 @@ get '/tasks/' => sub{
 	$self->stash(
 		page => $page,
 		tasks => $result->fetch_hash_all,
+	);
+};
+
+get '/store/:productid/' => sub{
+	my $self = shift;
+	my $page = {
+		url => 'store'
+	};
+
+	my $result = $dbi->select(
+		table => 'products',
+		where => {id => $self->param('productid')},
+	)->fetch_hash;
+	
+	$self->stash(
+		page => $page,
+		product => $result,
 	);
 };
 
