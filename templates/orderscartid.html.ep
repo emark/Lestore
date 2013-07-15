@@ -190,7 +190,7 @@
 	</div>
 	<div class="control-group">
 		<div class="controls">
-			Код отзыва: <b><%= $order->{rvcode} %></b>
+			Код активации: <b><%= $order->{rvcode} %></b>
 		</div>
 	</div>
 
@@ -239,7 +239,7 @@
 			<div id="addtask" class="tab-pane active">
 %	if($order->{status} == 1){
 			<p>Добавить задачу</p>
-			<form action="/orders/<%= $cartid %>/task/add" method="post">
+			<form action="/orders/<%= $cartid %>/task/add" meth	od="post">
 			<input type="hidden" name="task" value="<%= $order->{task} %>">
 			<textarea rows=2 class="span5" name="msg"></textarea>
 			<input type="submit" value="Записать" class="btn">
@@ -259,6 +259,7 @@
 			<div id="prnForms" class="tab-pane">
 				<a href="/cgi-bin/storeadmin/prnforms.pl?t=TradeCheck&cartid=<%= $cartid %>" target=PrintForm class="btn"> Товарный чек</a>
 				<a href="/cgi-bin/storeadmin/prnforms.pl?t=OrderView&cartid=<%= $cartid %>" target=PrintForm class="btn">Накладная</a>
+				<a href="/cgi-bin/storeadmin/prnforms.pl?t=Review&cartid=<%= $cartid %>" target=PrintForm class="btn">Купон на отзыв</a>
 			</div>
 		</div>
 	</div>
