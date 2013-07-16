@@ -6,7 +6,6 @@
 
 <img src="/media/products/large/<%=$product->{url} %>.jpg"">
 
-<p>
 	<div id="features" class="tab-pane">
 % my $age_group = 'без ограничений';
 % $age_group = "от $product->{age} лет" if $product->{age};
@@ -43,5 +42,4 @@
 			</table>
 % }
 	</div>
-	
-</p>
+<a href="http://www.nastartshop.ru/catalog/<%= $product->{caturl} %>/<%= $product->{url} %>.html" target=_blank>Карточка товара в интернет-магазине</a>
