@@ -4,25 +4,29 @@
 
 <h1><%= $product->{title} %></h1>
 
-<img src="/media/products/large/<%=$product->{url} %>.jpg"">
+<p><img src="/media/products/large/<%=$product->{url} %>.jpg""></p>
 
-	<div id="features" class="tab-pane">
+		<b>Остаток на складе</b>
+			<ul>
+				<li><%= $product->{instore} %></li>
+			</ul>
+
 % my $age_group = 'без ограничений';
 % $age_group = "от $product->{age} лет" if $product->{age};
-		<h3>Возрастная группа</h3>
+		<b>Возрастная группа</b>
 			<ul>
 				<li><%= $age_group %></li>
 			</ul>
 
 % my $warranty = '6 мес.';
 % $warranty = "$product->{warranty} мес." if $product->{warranty};
-		<h3>Гарантийный срок</h3>
+		<b>Гарантийный срок</b>
 			<ul>
 				<li><%= $warranty %></li>
 			</ul>
 
 % if($product->{'settings'}){
-		<h3>Комплектация</h3>
+		<b>Комплектация</b>
 			<ol>
 % 	foreach my $key(split('#',$product->{'settings'})){
 					<li><%= $key %></li>
@@ -31,7 +35,7 @@
 % }
 % my @content = split('#',$product->{'features'});
 % if(@content){
-		<h3>Параметры</h3>
+		<b>Параметры</b>
 			<table class="table">
 			<tbody>
 % 	foreach my $key(@content){
@@ -41,5 +45,5 @@
 			</tbody>
 			</table>
 % }
-	</div>
-<a href="http://www.nastartshop.ru/catalog/<%= $product->{caturl} %>/<%= $product->{url} %>.html" target=_blank>Карточка товара в интернет-магазине</a>
+
+<p><a href="http://www.nastartshop.ru/catalog/<%= $product->{caturl} %>/<%= $product->{url} %>.html" target=_blank>Карточка товара в интернет-магазине</a></p>
