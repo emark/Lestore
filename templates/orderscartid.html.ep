@@ -239,7 +239,7 @@
 			<div id="addtask" class="tab-pane active">
 %	if($order->{status} == 1){
 			<p>Добавить задачу</p>
-			<form action="/orders/<%= $cartid %>/task/add" meth	od="post">
+			<form action="/orders/<%= $cartid %>/task/add" method="post">
 			<input type="hidden" name="task" value="<%= $order->{task} %>">
 			<textarea rows=2 class="span5" name="msg"></textarea>
 			<input type="submit" value="Записать" class="btn">
