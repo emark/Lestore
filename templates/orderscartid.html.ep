@@ -16,10 +16,11 @@
       <th>Арт.</th>
       <th>Наименование</th>
       <th>Количество</th>
+      <th>Дисконт, %</th>
       <th>Цена</th>
-      <th>Дисконт</th>
+      <th>Скидка, %</th>
+      <th>Стоимость</th>
       <th>Сумма</th>
-      <th>Скидка</th>
     </tr>
   </thead>
   <tbody>
@@ -57,16 +58,17 @@
 %		$discount_price = sprintf ("%d",($item->{price}*$discount->{discount}));
 %		$discount_price = $item->{price}-$discount_price;
 % 	};
-	<td><%= $discount_price %></td>
+	<td><%= $item->{discount} %></td>
+	<td><%= $item->{price} %></td>
 
-%	$discount_item = $item->{discount};
+%	$discount_item = 0;#$item->{discount};
 %	$discount_item = $discount->{discount}*100 if ($item->{discount} == 0 && $discount->{discount}<1);
 %	$item_sum = $discount_price*$item->{count};
 %	$item_sum = $balance if($balance-$item_sum < 0);
 %	$balance = $balance-$item_sum;
-	<td><%= $item->{discount} %></td>
-	<td><%= $item_sum %></td>
 	<td><%= $discount_item %></td>
+	<td><%= $discount_price %></td>
+	<td><%= $item_sum %></td>
 	</tr>
 % }
   </tbody>
@@ -77,8 +79,9 @@
 % };
 
 <h3>Сумма заказа: <%= $discount_cart %> руб.</h3>
-<p><b>Общая сумма заказа:</b> <%= $total_cart %> руб.<br />
-<b>Дисконт / Промо-код:</b> <%= $order->{discount} %>
+<p><b>Сумма заказа без скидки:</b> <%= $total_cart %> руб.<br />
+<b>Сумма скидки:</b> <%= $discount_sum %> руб.<br /></p>
+<p><b>Дисконт / Промо-код:</b> <%= $order->{discount} %>
 
 % if($discount->{closed}){
 %	my $link = $cartid;
