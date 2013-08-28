@@ -266,6 +266,7 @@
 				<a href="/cgi-bin/storeadmin/prnforms.pl?t=TradeCheck&cartid=<%= $cartid %>" target=PrintForm class="btn"> Товарный чек</a>
 				<a href="/cgi-bin/storeadmin/prnforms.pl?t=OrderView&cartid=<%= $cartid %>" target=PrintForm class="btn">Накладная</a>
 				<a href="/cgi-bin/storeadmin/prnforms.pl?t=Review&cartid=<%= $cartid %>" target=PrintForm class="btn">Купон на отзыв</a>
+				<a href="/cgi-bin/storeadmin/prnforms.pl?t=RecipientInformation&cartid=<%= $cartid %>" target=RecipientInformation class="btn">Получатель</a>
 				<a href="/cgi-bin/storeadmin/prnforms.pl?t=CreditOrder&cartid=<%= $cartid %>" target=PrintForm class="btn">Заявка на кредит</a>
 			</div>
 		</div>
