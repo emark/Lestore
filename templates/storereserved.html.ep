@@ -16,7 +16,7 @@
   <tbody>
 % foreach my $item (@{$items}){
 	<tr>
-	<td><%= $item->{orderid} %></td>
+	<td><%= link_to $item->{orderid} => "/orders/$item->{cartid}" %></td>
 	<td><%= $item->{productid} %></td>
 	<td><%= $item->{title} %></td>
 	<td><%= $item->{count} %></td>

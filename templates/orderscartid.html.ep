@@ -78,6 +78,10 @@
 <a href="/orders/<%= $cartid %>/add" class="btn"><i class="icon icon-th"></i> Добавить товар</a>
 % };
 
+% if($order->{status} == 0){
+<a href="/orders/<%= $cartid %>/checkstore" class="btn" target=_blank><i class="icon icon-check"></i> Проверить наличие</a>
+% };
+
 <h3>Сумма заказа: <%= $discount_cart %> руб.</h3>
 <p><b>Сумма заказа без скидки:</b> <%= $total_cart %> руб.<br />
 <b>Сумма скидки:</b> <%= $discount_sum %> руб.<br /></p>

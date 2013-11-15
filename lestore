@@ -29,36 +29,8 @@ get '/' => sub {
 	my $page = {
 		url => 'index',
 	};
-	my @ltime = localtime(time);
-	my $month = $ltime[4]+1;
-	my $year = 1900+$ltime[5];
-	$month = '0'.$month if $month < 10;
-	my $unixtime = str2time("$month/01/$year 00:00:00");
 
-	my $result = $dbi->select(
-		table => 'orders',
-		where => [
-			':cartid{>=} and :status{=}',
-			{cartid => $unixtime, status => 4},
-		],
-	);
-	my $orders = $result;
-	my $ordercount = 0;
-	my $totalsum = 0;
-	while (my $row = $orders->fetch_hash){
-		$result = $dbi->select(
-			table => 'items',
-			where => {cartid => $row->{cartid}},
-		);
-		while (my $item = $result->fetch_hash){
-			my $price = $item->{price};
-			$price = $item->{price}-$item->{price}*($item->{discount}/100) if $item->{discount};
-			$totalsum = $totalsum + $item->{count}*$price;
-		}
-		$ordercount++;
-	};
-
-	my $msg = "С начала месяца обработано: $ordercount заказов. Общая сумма без учета скидок $totalsum рублей";
+	my $msg = "Система учета заказов. ООО Электронный маркетинг 2012";
 	$self->stash(
 		page => $page,
 		msg => $msg,
@@ -278,6 +250,43 @@ get '/orders/:cartid/add' => sub{
         page => $page,
         products => $result->fetch_hash_all,
     );
+};
+
+get '/orders/:cartid/checkstore' => sub{
+	my $self = shift;
+	my $page = {
+		'url' => 'orders',
+	};
+	my $cartid = $self->param('cartid');
+	
+	my $checkitems = $dbi->select(
+		table => 'items',
+		column => ['productid','count'],
+		where => {cartid => $cartid},
+	);
+	my $activeorders = $dbi->select(
+		table => 'orders',
+		column => ['cartid'],
+		where => {status => 1},
+	)->values;
+	my $reserved = $dbi->select(
+		table => 'items',
+		column => ['productid','count'],
+		where => {cartid => $activeorders},
+	);
+	my $store = $dbi->select(
+		table => 'products',
+		column => ['id','instore','title'],
+	);
+		
+	$self->stash(
+		checkitems => $checkitems->fetch_hash_all,
+		reserved => $reserved->fetch_hash_all,
+		instore => $store->fetch_hash_all,
+		page => $page,
+		msg => 'ttt',
+	);
+	$self->render('checkstore');
 };
 
 get '/orders/:cartid/discount/:operation/:discountid' => {discountid => 0} => sub{

@@ -1,0 +1,51 @@
+% layout 'default';
+% title 'Наличие товара';
+%# dev
+
+<h2>Контроль наличия товара</h2>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Арт.</th>
+      <th>Склад</th>
+      <th>Резерв</th>
+      <th>Требуется</th>
+      <th>Остаток</th>
+    </tr>
+  </thead>
+  <tbody>
+
+% foreach my $checkitem_key (@{$checkitems}){
+%	my $checkitem_id = $checkitem_key->{productid};
+%	my $checkitem_count = $checkitem_key->{count};
+
+%	my $instore_count = 0;
+% 	my $item_caption = '';
+% 	foreach my $instore_key (@{$instore}){
+%		if ($instore_key->{id} == $checkitem_id){
+%			$instore_count = $instore_key->{instore};
+%			$item_caption = $instore_key->{title};
+%		};
+% 	};
+
+% 	my $reserved_count = 0;
+% 	foreach my $reserved_key (@{$reserved}){
+%		$reserved_count = $reserved_count+$reserved_key->{count} if $checkitem_id == $reserved_key->{productid};
+% 	};
+
+%	my $balance_store = $instore_count-$reserved_count-$checkitem_count;
+%	my $class = '';
+% 	$class = 'error' if $balance_store < 0;
+	<tr class=<%= $class %>>
+	<td><%= link_to $checkitem_id => "/store/$checkitem_id" => (title => $item_caption, target => "blank") %></td>
+	<td><%= $instore_count %></td>
+	<td><%= $reserved_count %></td>
+	<td><%= $checkitem_count %></td>
+	<td><%= $balance_store %></td>
+	</tr>
+
+% }
+
+  </tbody>
+</table>
