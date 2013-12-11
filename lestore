@@ -507,7 +507,7 @@ get '/store/' => sub{
 	my $page = {
 		url => 'store',
 	};
-	my $result = $dbi->select(
+	my $products = $dbi->select(
 		table => 'products'
 	);
 	
@@ -517,10 +517,20 @@ get '/store/' => sub{
         where => {type => 0},
     );
 
+	my $reserved = $dbi->select(
+		table => 'items',
+		column => ['items.productid','count(items.count)'],
+		where => {'orders.status' => 1},
+		append => 'group by items.productid',
+		join => ['left outer join orders on orders.cartid = items.cartid'],
+	);
+
     $self->stash(
         page => $page,
-        products => $result->fetch_hash_all,
+        products => $products->fetch_hash_all,
         category => $category->fetch_hash_all,
+		reserved => $reserved->fetch_all,
+		x => $dbi->last_sql,
     );
 };
 

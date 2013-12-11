@@ -1,6 +1,11 @@
 % layout 'default';
 % title 'Товары на складе';
 % my $caturl = $self->param('caturl') || '';
+%#dev
+% my %reserved = ();
+% foreach my $key (@{$reserved}){
+%	$reserved{$key->[0]} = $key->[1];
+% };
 
 <h1>Товары на складе</h1>
 
@@ -29,11 +34,12 @@
       <th>Наименование</th>
       <th>Стоимость</th>
       <th>Дисконт</th>
-      <th>Остаток</th>
+      <th>Остаток / Резерв</th>
       <th>Количество</th>
     </tr>
   </thead>
   <tbody>
+
 % foreach my $product (@{$products}){
 	<tr>
 	<td><input type="hidden" name=productid value="<%=$product->{id} %>"><%=$product->{id} %></td>
@@ -41,7 +47,9 @@
 	<td><input type="hidden" name=title value="<%=$product->{title} %>"><a href="/store/<%= $product->{id} %>" target=_blank><%=$product->{title} %></a></td>
 	<td><input type="hidden" name=price value="<%=$product->{price} %>"><%=$product->{price} %></td>
 	<td><%=$product->{discount} %></td>
-	<td><%=$product->{instore} %></td>
+	<td><%=$product->{instore} %> /
+%=	$reserved{$product->{id}} ? $reserved{$product->{id}} : 0;
+	</td>
 	<td><input class="input-mini" type="text" name="count"></td>
 	</tr>
 % }
