@@ -1,5 +1,9 @@
 % layout 'default';
 % title 'Новый заказ';
+% my %reserved = ();
+% foreach my $key (@{$reserved}){
+%	$reserved{$key->[0]} = $key->[1];
+% };
 
 <h1>Новый заказ</h1>
 
@@ -25,7 +29,9 @@
 	<td><input type="hidden" name="title" value="<%=$product->{title} %>"><%=$product->{title} %></td>
 	<td><input type="hidden" name="price" value="<%=$product->{price} %>"><%=$product->{price} %></td>
 	<td><input type="hidden" name="productdiscount" value="<%=$product->{discount} %>"><%=$product->{discount} %></td>
-	<td><%=$product->{instore} %></td>
+	<td><%=$product->{instore} %> / 
+%=	$reserved{$product->{id}} ? $reserved{$product->{id}} : 0;
+	</td>
 	<td><input class="input-mini" type="text" name="count"></td>
 	</tr>
 % }

@@ -123,9 +123,18 @@ get '/orders/new/' => sub{
 		table => 'products',
 	);
 
+	my $reserved = $dbi->select(
+        table => 'items',
+        column => ['items.productid','count(items.count)'],
+        where => {'orders.status' => 1},
+        append => 'group by items.productid',
+        join => ['left outer join orders on orders.cartid = items.cartid'],
+    );
+
 	$self->stash(
 		page => $page,
 		products => $result->fetch_hash_all,
+		reserved => $reserved->fetch_all,
 	);
 	$self->render('neworder');
 };
@@ -246,9 +255,18 @@ get '/orders/:cartid/add' => sub{
         table => 'products',
     );
 
+	my $reserved = $dbi->select(
+        table => 'items',
+        column => ['items.productid','count(items.count)'],
+        where => {'orders.status' => 1},
+        append => 'group by items.productid',
+        join => ['left outer join orders on orders.cartid = items.cartid'],
+    );
+
     $self->stash(
         page => $page,
         products => $result->fetch_hash_all,
+        reserved => $reserved->fetch_all,
     );
 };
 

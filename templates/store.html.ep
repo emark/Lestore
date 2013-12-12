@@ -1,7 +1,6 @@
 % layout 'default';
 % title 'Товары на складе';
 % my $caturl = $self->param('caturl') || '';
-%#dev
 % my %reserved = ();
 % foreach my $key (@{$reserved}){
 %	$reserved{$key->[0]} = $key->[1];
