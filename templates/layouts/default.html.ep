@@ -52,7 +52,7 @@
   <input type="text" class="search-query" placeholder="Поиск заказа по номеру" name="id">
 </form>
 	    <ul class="nav pull-right">
-              <li <%== $top_menu_class{help} %>><a href="http://help.emrk.ru/" target=_blank>Помощь</a></li>
+              <li><a href="http://help.emrk.ru/" target=_blank>Помощь</a></li>
 	    </ul>
           </div><!--/.nav-collapse -->
         </div>
