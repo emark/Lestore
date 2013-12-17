@@ -161,6 +161,7 @@
 		<div class="controls">
 			<textarea name="address" rows="2"><%=$order->{address} %></textarea>
 			<span class="help-block">Показать адрес на <a href="http://maps.yandex.ru/?text=<%=$order->{address} %>" target=_blank>Яндекс.Картах</a></span>
+			<span class="help-block"><a href="http://www.google.com/calendar/event?action=TEMPLATE&text=<%=$order->{id}%>&location=<%=$order->{address} %>" target=_blank>Добавить доставку</a> в календарь</span>
 		</div>
 	</div>
 	<div class="control-group">
