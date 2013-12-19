@@ -6,6 +6,11 @@
 
 <p><img src="http://www.nastartshop.ru/media/products/large/<%=$product->{url} %>.jpg"></p>
 
+		<b>Цена</b>
+			<ul>
+				<li><%= $product->{price} %> руб.</li>
+			</ul>
+
 		<b>Остаток на складе</b>
 			<ul>
 				<li><%= $product->{instore} %></li>
