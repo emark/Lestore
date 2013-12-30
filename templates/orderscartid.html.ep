@@ -133,12 +133,14 @@
 		<label class="control-label" for="tel"><strong>Телефон*</strong></label>
 		<div class="controls">
 			<input class="span2" name="tel" type="text" value="<%=$order->{tel} %>" />
+			<span class="help-block"><a href="/cgi-bin/storeadmin/sms.pl?cartid=<%= $cartid %>" target=_blank>Отправить</a> SMS статус заказа</span>
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label " for="email">Почта</label>
 		<div class="controls">
 			<input name="email" class="span3" type="text" value="<%=$order->{email} %>" />
+			<span class="help-block"><a href="/cgi-bin/storeadmin/mailer.pl?cartid=<%= $cartid %>" target=_blank>Отправить</a> сообщение о заказе</span>
 		</div>	
 	</div>
 </div>
@@ -185,13 +187,6 @@
 % my %storename = ();
 % $storename{$order->{storename}} = 'selected';
 
-	<!--div class="controls">
-	        <label class="control-label"><strong>Интернет-магазин</strong></label>
-		<select name="storename">
-			<option value="nastartshop" <%= $storename{nastartshop} %>>НаСтарт</option>
-			<option value="papatut" <%= $storename{papatut} %>>Папатут</option>
-		</select>
-        </div-->
 	<input type="hidden" name="storename" value="nastartshop">
 	<div class="control-group">
         	<label class="control-label ">Комментарий к заказу</label>
@@ -242,29 +237,25 @@
 % };
 % my $taskscount = keys %task;
 		<ul class="nav nav-tabs">
-		  <li class="active"><a href="#addtask" data-toggle="tab">Новая</a></li>
-		  <li><a href="#alltasks" data-toggle="tab"><i class="icon-th-list icons"></i> Все задачи (<%= $taskscount %>)</a></li>
+		  <li class="active"><a href="#alltasks" data-toggle="tab"><i class="icon-th-list icons"></i> Задачи (<%= $taskscount %>)</a></li>
 		  <li><a href="#prnForms" data-toggle="tab"><i class="icon-print icons"></i> Печатные формы</a></li>
 		</ul>
 		<div id="task" class="tab-content">
-			<div id="addtask" class="tab-pane active">
+			<div id="alltasks" class="tab-pane active">
+
 %	if($order->{status} == 1){
-			<p>Добавить задачу</p>
 			<form action="/orders/<%= $cartid %>/task/add" method="post">
 			<input type="hidden" name="task" value="<%= $order->{task} %>">
 			<textarea rows=2 class="span5" name="msg"></textarea>
-			<input type="submit" value="Записать" class="btn">
+			<input type="submit" value="Добавить" class="btn">
 			</form>
 %	}
-			</div>
-			<div id="alltasks" class="tab-pane">
+
 % if(%task){
 % my @texttime = sort {$b <=> $a} keys %task;
 %	foreach my $key (@texttime){
 		<p><small class="muted"><%= localtime($key) %></small><br /><%= $task{$key} %></p>
 % 	}
-% }else{
-				<p>Задач нет</p>
 % }
 			</div>
 			<div id="prnForms" class="tab-pane">
