@@ -17,14 +17,14 @@
       <th>Наименование</th>
       <th>Стоимость</th>
       <th>Дисконт</th>
-      <th>Остаток</th>
+      <th title='Остаток / Резерв'>О / Р</th>
       <th>Количество</th>
     </tr>
   </thead>
   <tbody>
 % foreach my $product (@{$products}){
 	<tr>
-	<td><input type="hidden" name=productid value="<%=$product->{id} %>"><%=$product->{id} %></td>
+	<td><input type="hidden" name=productid value="<%=$product->{id} %>">#<%=$product->{id} %></td>
 	<td><img src="http://www.nastartshop.ru/media/products/64x/<%=$product->{url} %>.jpg"></td>
 	<td><input type="hidden" name="title" value="<%=$product->{title} %>"><%=$product->{title} %></td>
 	<td><input type="hidden" name="price" value="<%=$product->{price} %>"><%=$product->{price} %></td>

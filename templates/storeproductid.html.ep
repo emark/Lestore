@@ -11,9 +11,10 @@
 				<li><%= $product->{price} %> руб.</li>
 			</ul>
 
-		<b>Остаток на складе</b>
+		<b>Cклад</b>
 			<ul>
-				<li><%= $product->{instore} %></li>
+				<li>Остаток: <%= $product->{instore} %></li>
+				<li>Место: <%= $product->{storage} %></li>
 			</ul>
 
 % my $age_group = 'без ограничений';

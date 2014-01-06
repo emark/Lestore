@@ -6,6 +6,7 @@ use Mojolicious::Lite;
 use Mojo::UserAgent;
 use DBIx::Custom;
 use Date::Parse;
+use Validator::Custom;
 
 use utf8;
 use v5.10.0;
@@ -50,7 +51,10 @@ get '/searchorder/' => sub{
 };
 
 post '/orders/new/' => sub{
-	my $self = shift;	
+	my $self = shift;
+	my $page = {
+		url => 'index',
+	};
 	my $cartid = time;
 	my $rvcode = int(rand(999));	
 	my $customer = {
@@ -67,7 +71,17 @@ post '/orders/new/' => sub{
 		'status' => 0,
 		'rvcode' => $rvcode,
 	};
-	
+
+	my $vc = Validator::Custom->new;
+    my $rule = [
+        tel => ['not_blank'],
+        delivery => ['defined'],
+        payment => ['defined'],
+    ];
+    my $vresult = $vc->validate($customer, $rule);
+
+	if($vresult->is_ok && $cartid){
+
 	$dbi->insert(
 		$customer,
 		table => 'orders',
@@ -112,6 +126,13 @@ post '/orders/new/' => sub{
 	};
 
 	$self->redirect_to('/orders/status/');
+	}else{
+	$self->stash(
+		msg => 'Заказ не оформлен. Заполните обязательные поля.',
+		page => $page,
+	);
+	$self->render('index');
+	};
 };
 
 get '/orders/new/' => sub{

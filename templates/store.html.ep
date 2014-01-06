@@ -33,15 +33,16 @@
       <th>Наименование</th>
       <th>Стоимость</th>
       <th>Дисконт</th>
-      <th>Остаток / Резерв</th>
-      <th>Количество</th>
+      <th title='Остаток / Резерв'>О / Р</th>
+      <th>Склад</th>
+      <th>Кол-во</th>
     </tr>
   </thead>
   <tbody>
 
 % foreach my $product (@{$products}){
 	<tr>
-	<td><input type="hidden" name=productid value="<%=$product->{id} %>"><%=$product->{id} %></td>
+	<td><input type="hidden" name=productid value="<%=$product->{id} %>">#<%=$product->{id} %></td>
 	<td><img src="http://www.nastartshop.ru/media/products/64x/<%=$product->{url} %>.jpg"></td>
 	<td><input type="hidden" name=title value="<%=$product->{title} %>"><a href="/store/<%= $product->{id} %>" target=_blank><%=$product->{title} %></a></td>
 	<td><input type="hidden" name=price value="<%=$product->{price} %>"><%=$product->{price} %></td>
@@ -49,6 +50,7 @@
 	<td><%=$product->{instore} %> /
 %=	$reserved{$product->{id}} ? $reserved{$product->{id}} : 0;
 	</td>
+	<td><%= $product->{storage} %></td>
 	<td><input class="input-mini" type="text" name="count"></td>
 	</tr>
 % }

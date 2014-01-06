@@ -133,14 +133,14 @@
 		<label class="control-label" for="tel"><strong>Телефон*</strong></label>
 		<div class="controls">
 			<input class="span2" name="tel" type="text" value="<%=$order->{tel} %>" />
-			<span class="help-block"><a href="/cgi-bin/storeadmin/sms.pl?cartid=<%= $cartid %>" target=_blank>Отправить</a> SMS статус заказа</span>
+			<span class="help-block"><a href="/cgi-bin/storeadmin/sms.pl?cartid=<%= $cartid %>" target=_blank>Отправить</a> статус заказа</span>
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label " for="email">Почта</label>
 		<div class="controls">
 			<input name="email" class="span3" type="text" value="<%=$order->{email} %>" />
-			<span class="help-block"><a href="/cgi-bin/storeadmin/mailer.pl?cartid=<%= $cartid %>" target=_blank>Отправить</a> сообщение о заказе</span>
+			<span class="help-block"><a href="/cgi-bin/storeadmin/mailer.pl?cartid=<%= $cartid %>" target=_blank>Отправить</a> статус заказа</span>
 		</div>	
 	</div>
 </div>
@@ -259,12 +259,12 @@
 % }
 			</div>
 			<div id="prnForms" class="tab-pane">
-				<a href="/cgi-bin/storeadmin/prnforms.pl?t=TradeCheck&cartid=<%= $cartid %>" target=PrintForm class="btn">Товарный чек</a>
 				<a href="/cgi-bin/storeadmin/prnforms.pl?t=OrderView&cartid=<%= $cartid %>" target=PrintForm class="btn">Накладная</a>
 				<a href="/cgi-bin/storeadmin/prnforms.pl?t=Review&cartid=<%= $cartid %>" target=PrintForm class="btn">Купон на отзыв</a>
+				<a href="/cgi-bin/storeadmin/prnforms.pl?t=TradeCheck&cartid=<%= $cartid %>" target=PrintForm class="btn">Товарный чек</a>
 				<a href="/cgi-bin/storeadmin/prnforms.pl?t=RecipientInformation&cartid=<%= $cartid %>" target=RecipientInformation class="btn">Маркер</a>
-				<a href="/cgi-bin/storeadmin/prnforms.pl?t=CreditOrder&cartid=<%= $cartid %>" target=PrintForm class="btn">Заявка на кредит</a>
-				<a href="/cgi-bin/storeadmin/prnforms.pl?t=TradeOrder&cartid=<%= $cartid %>" target=PrintForm class="btn">Приложение к договору</a>
+				<!--a href="/cgi-bin/storeadmin/prnforms.pl?t=CreditOrder&cartid=<%= $cartid %>" target=PrintForm class="btn">Заявка на кредит</a>
+				<a href="/cgi-bin/storeadmin/prnforms.pl?t=TradeOrder&cartid=<%= $cartid %>" target=PrintForm class="btn">Приложение к договору</a-->
 			</div>
 		</div>
 	</div>
