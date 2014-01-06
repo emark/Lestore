@@ -8,7 +8,8 @@
 
 		<b>Цена</b>
 			<ul>
-				<li><%= $product->{price} %> руб.</li>
+				<li>Стоимость: <%= $product->{price} %> руб.</li>
+				<li>Дисконт: <%= $product->{discount} %>%</li>
 			</ul>
 
 		<b>Cклад</b>
@@ -42,7 +43,7 @@
 % my @content = split('#',$product->{'features'});
 % if(@content){
 		<b>Параметры</b>
-			<table class="table">
+			<table class="table table-hover">
 			<tbody>
 % 	foreach my $key(@content){
 %		my($param,$value)=split(':',$key);

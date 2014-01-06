@@ -11,13 +11,20 @@
 <div class="pagination">
   <ul>
     <li><a href="/store/reserved/">Резерв</a></li>
+    <li><a href="?instore=1">В наличии</a></li>
   </ul>
 </div>
 
 <h4>Категории</h4>
 <ul class="nav nav-pills">
+
+% my $class_disabled = 'disabled';
+% $class_disabled = '' if ($caturl);
+
+<li class="<%= $class_disabled %>"><a href="/store/">Все</a></li>
+
 % foreach my $cat (@{$category}){
-% 	my $class_disabled = '';
+% 	$class_disabled = '';
 % 	$class_disabled = 'disabled' if ($caturl eq $cat->{'url'});
   <li class="<%= $class_disabled %>"><a href="/store/category/<%= $cat->{url} %>"><%= $cat->{caption} %></a></li>
 % }
@@ -32,9 +39,7 @@
       <th>Фото</th>
       <th>Наименование</th>
       <th>Стоимость</th>
-      <th>Дисконт</th>
       <th title='Остаток / Резерв'>О / Р</th>
-      <th>Склад</th>
       <th>Кол-во</th>
     </tr>
   </thead>
@@ -44,13 +49,11 @@
 	<tr>
 	<td><input type="hidden" name=productid value="<%=$product->{id} %>">#<%=$product->{id} %></td>
 	<td><img src="http://www.nastartshop.ru/media/products/64x/<%=$product->{url} %>.jpg"></td>
-	<td><input type="hidden" name=title value="<%=$product->{title} %>"><a href="/store/<%= $product->{id} %>" target=_blank><%=$product->{title} %></a></td>
+	<td><input type="hidden" name=title value="<%=$product->{title} %>"><a href="/store/<%= $product->{id} %>" target=_blank><%=$product->{title} %></a> (<a href="/store/category/<%= $product->{caturl} %>" title="Переход в категорию товара">в категорию</a>)</td>
 	<td><input type="hidden" name=price value="<%=$product->{price} %>"><%=$product->{price} %></td>
-	<td><%=$product->{discount} %></td>
 	<td><%=$product->{instore} %> /
 %=	$reserved{$product->{id}} ? $reserved{$product->{id}} : 0;
 	</td>
-	<td><%= $product->{storage} %></td>
 	<td><input class="input-mini" type="text" name="count"></td>
 	</tr>
 % }

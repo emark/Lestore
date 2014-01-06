@@ -546,8 +546,11 @@ get '/store/' => sub{
 	my $page = {
 		url => 'store',
 	};
+	my $instore = $self->param('instore') || 0;
+
 	my $products = $dbi->select(
-		table => 'products'
+		table => 'products',
+		where => "instore >= $instore",
 	);
 	
 	my $category = $dbi->select(
@@ -575,12 +578,16 @@ get '/store/' => sub{
 get '/store/category/:caturl' => sub{
 	my $self = shift;
 	my $caturl = $self->param('caturl');
+	my $instore = $self->param('instore') || 0;
     my $page = {
         url => 'store',
     };
     my $products = $dbi->select(
         table => 'products',
-		where => {caturl => $caturl}
+		where => [
+			['and',':caturl{=}',':instore{>=}'],
+			{caturl => $caturl, instore => $instore},
+		]
     );
 
 	my $category = $dbi->select(
