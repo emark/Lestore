@@ -48,7 +48,7 @@
     <tr class="<%= $status_class[$order->{status}] %> <%= $writeoff_class %>">
       <td><a href="/orders/<%= $order->{cartid} %>"><%= $order->{id} %></a>-<%= @taskscount %></td>
       <td><%= $order->{person}%></td>
-      <td><%= $order->{tel} %><br /><a href="mailto:<%= $order->{email}%>"><%= $order->{email}%></a></td>
+      <td><%= $order->{tel} %><br /><a href="mailto:<%= $order->{email}%>?subject=Информация по заказу <%= $order->{id} %>"><%= $order->{email}%></a></td>
       <td><%= $payment{$order->{payment}} %></td>
       <td><%= $delivery{$order->{delivery}} %></td>
       <td><a href="http://maps.yandex.ru/?text=<%= $order->{address}%>" title="Показать на Яндекс.Карты" target=_blank><%= $order->{address}%></a></td>
