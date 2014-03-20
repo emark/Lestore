@@ -3,8 +3,9 @@
 % my $caturl = $self->param('caturl') || '';
 
 <h1><%= $product->{title} %></h1>
+<p>Артикул: <%= sprintf("%06d",$product->{id}) %></p>
 
-<p><img src="http://www.nastartshop.ru/media/products/large/<%=$product->{url} %>.jpg"></p>
+<p><img src="http://www.nastartshop.ru/media/products/large/<%=$product->{url} %>.jpg" class="noPrint"></p>
 
 		<b>Цена</b>
 			<ul>
