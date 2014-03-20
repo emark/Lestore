@@ -1,0 +1,10 @@
+.writeoff{
+	font-weight: bold;
+}
+
+@media print {
+	.noPrint {
+		display:none;	
+	}
+}
+

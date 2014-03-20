@@ -3,7 +3,7 @@ templates/layouts/*.ep~
 app.conf
 *~
 *.swp
-public
+public/media
 .schema
 .dump
 log
