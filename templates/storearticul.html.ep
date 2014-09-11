@@ -4,7 +4,7 @@
 <h1>Печать артикулов</h1>
 <small>Укажите необходимое количество артикулов каждой позиции товара</small>
 
-<form action="http://emrk/cgi-bin/storeadmin/prnforms.pl" method="post" target="PrintForm" class="form-inline">
+<form action="/cgi-bin/storeadmin/prnforms.pl" method="post" target="PrintForm" class="form-inline">
 <input type="hidden" name="t" value="Articul">
 <input type="hidden" name="cartid" value="not-empty"><!-- For prnforms script rule -->
 
