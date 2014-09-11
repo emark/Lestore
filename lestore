@@ -649,6 +649,26 @@ get '/store/reserved/' => sub{
 	$self->render('storereserved');
 };
 
+get '/store/articul/' => sub {
+	
+	my $self= shift;
+	my $page = {
+	
+		url => 'store',
+	};
+
+	my $products = $dbi->select(
+		
+		table => 'products',
+		column => ['id', 'title'],
+	)->fetch_all;
+
+	$self->stash(
+	
+		page => $page,
+		products => $products,
+	);
+};
 
 post '/store/' => sub{
 	my $self = shift;

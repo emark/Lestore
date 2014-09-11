@@ -1,0 +1,30 @@
+% layout 'default';
+% title 'Печать артикулов';
+
+<h1>Печать артикулов</h1>
+<small>Укажите необходимое количество артикулов каждой позиции товара</small>
+
+<form action="http://emrk/cgi-bin/storeadmin/prnforms.pl" method="post" target="PrintForm">
+<input type="hidden" name="t" value="Articul">
+<input type="hidden" name="cartid" value="not-empty"><!-- For prnforms script rule -->
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Артикул</th>
+      <th>Наименование</th>
+      <th>Количество</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+% foreach my $product (@{$products}){
+
+	<tr><td>#<%== $product->[0] %><input type="hidden" name="id" value="<%== $product->[0] %>"></td><td><%== $product->[1] %></td><td><input type="text" class="input-mini" name="count"></td></tr>
+
+% };
+
+</table>
+
+<input type="submit" value="Печать" class="btn btn-large">
+</form>

@@ -12,6 +12,7 @@
   <ul>
     <li><a href="/store/reserved/">Резерв</a></li>
     <li><a href="?instore=1">В наличии</a></li>
+    <li><a href="/store/articul/">Артикул</a></li>
   </ul>
 </div>
 
