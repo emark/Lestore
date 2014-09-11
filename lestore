@@ -46,8 +46,15 @@ get '/searchorder/' => sub{
 		table => 'orders',
 		column => 'cartid',
 		where => {id => $orderid},
-	)->value;
-	$self->redirect_to("/orders/$cartid");
+	)->value || undef;
+	
+	$self->redirect_to("/orders/$cartid") if $cartid;
+	
+	$self->stash(
+	page => {url => 'index'},
+	msg => 'Заказ не найден',
+	);
+	$self->render('index');
 };
 
 post '/orders/new/' => sub{
