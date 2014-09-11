@@ -4,7 +4,7 @@
 <h1>Печать артикулов</h1>
 <small>Укажите необходимое количество артикулов каждой позиции товара</small>
 
-<form action="http://emrk/cgi-bin/storeadmin/prnforms.pl" method="post" target="PrintForm">
+<form action="http://emrk/cgi-bin/storeadmin/prnforms.pl" method="post" target="PrintForm" class="form-inline">
 <input type="hidden" name="t" value="Articul">
 <input type="hidden" name="cartid" value="not-empty"><!-- For prnforms script rule -->
 
@@ -20,11 +20,19 @@
   
 % foreach my $product (@{$products}){
 
-	<tr><td>#<%== $product->[0] %><input type="hidden" name="id" value="<%== $product->[0] %>"></td><td><%== $product->[1] %></td><td><input type="text" class="input-mini" name="count"></td></tr>
+	<tr><td>#<%== $product->[0] %>
+	<input type="hidden" name="id" value="<%== $product->[0] %>">
+	<input type="hidden" name="title" value="<%== $product->[1] %>">
+	<input type="hidden" name="url" value="<%== $product->[2] %>">
+	<input type="hidden" name="caturl" value="<%== $product->[3] %>"></td>
+	<td><%== $product->[1] %></td><td><input type="text" class="input-mini" name="count"></td></tr>
 
 % };
 
 </table>
 
-<input type="submit" value="Печать" class="btn btn-large">
+<legend>Настройки</legend>
+<label>Количество столбцов</label>
+<input type="text" class="input-small" name="max_cols">
+<input type="submit" value="Печать" class="btn">
 </form>

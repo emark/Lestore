@@ -660,7 +660,7 @@ get '/store/articul/' => sub {
 	my $products = $dbi->select(
 		
 		table => 'products',
-		column => ['id', 'title'],
+		column => ['id', 'title','url','caturl'],
 	)->fetch_all;
 
 	$self->stash(
