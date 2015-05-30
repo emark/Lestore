@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 use strict;
-use lib "/home/hosting_locumtest/usr/local/lib/perl5";
+use lib "/home/hosting_sviridenko/usr/local/lib/perl5";
 use Mojolicious::Lite;
 use Mojo::UserAgent;
 use DBIx::Custom;
